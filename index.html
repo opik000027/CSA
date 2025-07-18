@@ -13,28 +13,31 @@
         html {
             scroll-behavior: smooth;
         }
+        /* Removed opacity:0 from animations to ensure text is always visible */
         .animate-fade-in-down {
             animation: fadeInDown 1s ease-out forwards;
-            opacity: 0;
-            transform: translateY(-20px);
         }
         .animate-fade-in-up {
             animation: fadeInUp 1s ease-out 0.5s forwards;
-            opacity: 0;
-            transform: translateY(20px);
         }
         .animate-bounce-in {
             animation: bounceIn 1s ease-out 1s forwards;
-            opacity: 0;
-            transform: scale(0.8);
         }
         @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
         @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -71,6 +74,30 @@
 
             // State for mobile menu visibility
             const [isMenuOpen, setIsMenuOpen] = useState(false);
+            // State for current background image index
+            const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+            // Array of background images
+            const backgroundImages = [
+                "https://placehold.co/1920x1080/0A2342/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+1",
+                "https://placehold.co/1920x1080/4A90E2/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+2",
+                "https://placehold.co/1920x1080/F5A623/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+3",
+                "https://placehold.co/1920x1080/D0021B/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+4",
+                "https://placehold.co/1920x1080/7ED321/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+5"
+            ];
+
+            // Effect to change background image every 5 seconds
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setCurrentImageIndex((prevIndex) =>
+                        (prevIndex + 1) % backgroundImages.length
+                    );
+                }, 5000); // Change image every 5 seconds
+
+                // Cleanup interval on component unmount
+                return () => clearInterval(interval);
+            }, [backgroundImages.length]); // Re-run if image array length changes (though it's static here)
+
 
             // Smooth scroll function
             const scrollToSection = (id) => {
@@ -150,8 +177,8 @@
                     )}
 
                     {/* Hero Section */}
-                    <section id="home" className="relative h-screen bg-cover bg-center flex items-center justify-center text-center"
-                        style={{ backgroundImage: "url('https://placehold.co/1920x1080/0A2342/FFFFFF?text=Latar+Belakang+Akademi+Olahraga')" }}>
+                    <section id="home" className="relative h-screen bg-cover bg-center flex items-center justify-center text-center transition-all duration-1000 ease-in-out"
+                        style={{ backgroundImage: `url('${backgroundImages[currentImageIndex]}')` }}>
                         <div className="absolute inset-0 bg-black opacity-60 rounded-lg"></div>
                         <div className="relative z-10 text-white p-6 md:p-10 rounded-xl shadow-2xl backdrop-blur-sm bg-white bg-opacity-20">
                             <h2 className="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">Ayo Gerak, Jadi Juara, Pasti Seru!</h2>
