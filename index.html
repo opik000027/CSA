@@ -3,275 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Champion Sport Academy</title>
-    <!-- Tailwind CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- Google Fonts - Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Champion Sport Academy - Membangun Karakter Juara</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Custom CSS for smooth scrolling and animations */
-        html {
-            scroll-behavior: smooth;
-        }
-        /* Removed opacity:0 from animations to ensure text is always visible */
-        .animate-fade-in-down {
-            animation: fadeInDown 1s ease-out forwards;
-        }
-        .animate-fade-in-up {
-            animation: fadeInUp 1s ease-out 0.5s forwards;
-        }
-        .animate-bounce-in {
-            animation: bounceIn 1s ease-out 1s forwards;
-        }
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            70% {
-                opacity: 1;
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
+        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #F9E27D 50%, #B8860B 100%); }
+        .text-gold { color: #D4AF37; }
+        .bg-maroon { background-color: #800000; }
     </style>
 </head>
-<body class="min-h-screen bg-gray-100 font-inter text-gray-900">
-    <div id="root"></div>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <!-- React and ReactDOM CDN -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <nav class="bg-maroon text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-widest text-gold">CHAMPION SPORT ACADEMY</h1>
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="hover:text-gold">Home</a>
+                <a href="#programs" class="hover:text-gold">Programs</a>
+                <a href="#schedule" class="hover:text-gold">Jadwal</a>
+                <a href="https://wa.me/6289655445151" class="bg-gold text-maroon px-4 py-1 rounded font-bold hover:bg-yellow-500 transition">Daftar</a>
+            </div>
+        </div>
+    </nav>
 
-    <script type="text/babel">
-        // Main App Component
-        const App = () => {
-            // Import useState and useEffect from React
-            const { useState, useEffect } = React;
+    <section id="home" class="relative h-[80vh] flex items-center justify-center text-center bg-gray-900 text-white px-4">
+        <div class="absolute inset-0 opacity-40 bg-black">
+            <img src="https://via.placeholder.com/1920x1080" alt="Background" class="w-full h-full object-cover">
+        </div>
+        <div class="relative z-10 max-w-3xl">
+            <h2 class="text-4xl md:text-6xl font-extrabold mb-4 italic">Membangun Karakter Juara Sejak Dini</h2>
+            <p class="text-lg md:text-xl mb-8 text-gray-300">Bergabunglah dengan akademi beladiri profesional di Cimahi Mall. Program disesuaikan untuk anak, remaja, hingga persiapan atlet.</p>
+            <a href="https://wa.me/6289655445151" class="gold-gradient text-maroon px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:scale-105 transition transform inline-block">
+                DAFTAR COBA GRATIS SEKARANG
+            </a>
+        </div>
+    </section>
 
-            // State for mobile menu visibility
-            const [isMenuOpen, setIsMenuOpen] = useState(false);
-            // State for current background image index
-            const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-            // Array of background images
-            const backgroundImages = [
-                "https://placehold.co/1920x1080/0A2342/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+1",
-                "https://placehold.co/1920x1080/4A90E2/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+2",
-                "https://placehold.co/1920x1080/F5A623/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+3",
-                "https://placehold.co/1920x1080/D0021B/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+4",
-                "https://placehold.co/1920x1080/7ED321/FFFFFF?text=Latar+Belakang+Akademi+Olahraga+5"
-            ];
-
-            // Effect to change background image every 5 seconds
-            useEffect(() => {
-                const interval = setInterval(() => {
-                    setCurrentImageIndex((prevIndex) =>
-                        (prevIndex + 1) % backgroundImages.length
-                    );
-                }, 5000); // Change image every 5 seconds
-
-                // Cleanup interval on component unmount
-                return () => clearInterval(interval);
-            }, [backgroundImages.length]); // Re-run if image array length changes (though it's static here)
-
-
-            // Smooth scroll function
-            const scrollToSection = (id) => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                    setIsMenuOpen(false); // Close menu after clicking on mobile
-                }
-            };
-
-            // Icon components (using inline SVG for simplicity and direct embedding)
-            // Karate Icon
-            const KarateIcon = () => (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-hand-fist">
-                    <path d="M18 11V7a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-                    <path d="M14 11V7a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-                    <path d="M10 11V7a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-                    <path d="M6 11V7a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-                    <path d="M22 11V7a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-                    <path d="M2 11V7a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/>
-                    <path d="M12 21.5a2.5 2.5 0 0 1-2.5-2.5V11a2.5 2.5 0 0 1 2.5-2.5h0a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5z"/>
-                </svg>
-            );
-
-            // Hapkido Icon (represented by a Shield for defense/protection aspects)
-            const ShieldIcon = () => (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shield">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-            );
-
-            // Hamburger menu icon
-            const MenuIcon = () => (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-menu">
-                    <line x1="4" x2="20" y1="12" y2="12"/>
-                    <line x1="4" x2="20" y1="6" y2="6"/>
-                    <line x1="4" x2="20" y1="18" y2="18"/>
-                </svg>
-            );
-
-            // Close icon for mobile menu
-            const XIcon = () => (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x">
-                    <path d="M18 6 6 18"/>
-                    <path d="m6 6 12 12"/>
-                </svg>
-            );
-
-            return (
-                <div className="min-h-screen bg-gray-100 font-inter text-gray-900">
-                    {/* Header Section */}
-                    <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-4 shadow-lg fixed w-full z-50 rounded-b-lg">
-                        <div className="container mx-auto flex justify-between items-center">
-                            <h1 className="text-3xl font-bold rounded-md p-2">Champion Sport Academy</h1>
-                            {/* Desktop Navigation */}
-                            <nav className="hidden md:flex space-x-6">
-                                <button onClick={() => scrollToSection('home')} className="hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-105 rounded-md p-2">Beranda</button>
-                                <button onClick={() => scrollToSection('about')} className="hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-105 rounded-md p-2">Tentang Kami</button>
-                                <button onClick={() => scrollToSection('programs')} className="hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-105 rounded-md p-2">Program</button>
-                                <button onClick={() => scrollToSection('contact')} className="hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-105 rounded-md p-2">Kontak</button>
-                            </nav>
-                            {/* Mobile Menu Button */}
-                            <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                                {isMenuOpen ? <XIcon /> : <MenuIcon />}
-                            </button>
-                        </div>
-                    </header>
-
-                    {/* Mobile Menu Overlay */}
-                    {isMenuOpen && (
-                        <div className="fixed inset-0 bg-blue-800 bg-opacity-95 z-40 flex flex-col items-center justify-center space-y-6 md:hidden rounded-lg m-4">
-                            <button onClick={() => scrollToSection('home')} className="text-white text-3xl hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-105 rounded-md p-2">Beranda</button>
-                            <button onClick={() => scrollToSection('about')} className="text-white text-3xl hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-105 rounded-md p-2">Tentang Kami</button>
-                            <button onClick={() => scrollToSection('programs')} className="text-white text-3xl hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-105 rounded-md p-2">Program</button>
-                            <button onClick={() => scrollToSection('contact')} className="text-white text-3xl hover:text-blue-200 transition duration-300 ease-in-out transform hover:scale-105 rounded-md p-2">Kontak</button>
-                        </div>
-                    )}
-
-                    {/* Hero Section */}
-                    <section id="home" className="relative h-screen bg-cover bg-center flex items-center justify-center text-center transition-all duration-1000 ease-in-out"
-                        style={{ backgroundImage: `url('${backgroundImages[currentImageIndex]}')` }}>
-                        <div className="absolute inset-0 bg-black opacity-60 rounded-lg"></div>
-                        <div className="relative z-10 text-white p-6 md:p-10 rounded-xl shadow-2xl backdrop-blur-sm bg-white bg-opacity-20">
-                            <h2 className="text-4xl md:text-6xl font-extrabold mb-4 animate-fade-in-down">Ayo Gerak, Jadi Juara, Pasti Seru!</h2>
-                            <p className="text-lg md:text-xl mb-8 animate-fade-in-up">Belajar Bela Diri Menyenangkan di Champion Sport Academy.</p>
-                            <button
-                                onClick={() => scrollToSection('programs')}
-                                className="bg-yellow-500 hover:bg-yellow-600 text-blue-900 font-bold py-3 px-8 rounded-full shadow-lg uppercase tracking-wide transition duration-300 ease-in-out transform hover:scale-105 animate-bounce-in"
-                            >
-                                Daftar Kelas Percobaan Gratis!
-                            </button>
-                        </div>
-                    </section>
-
-                    {/* About Us Section */}
-                    <section id="about" className="py-16 bg-white rounded-t-xl -mt-8 relative z-10 shadow-inner">
-                        <div className="container mx-auto px-6 text-center">
-                            <h2 className="text-4xl font-bold text-blue-800 mb-8">Tentang Kami</h2>
-                            <div className="flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-12">
-                                <div className="md:w-1/2">
-                                    <img
-                                        src="https://placehold.co/600x400/0A2342/FFFFFF?text=Tim+Pelatih"
-                                        alt="Tim Pelatih Champion Sport Academy"
-                                        className="rounded-xl shadow-lg transform transition duration-500 hover:scale-105"
-                                        onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/600x400/0A2342/FFFFFF?text=Gambar+Tidak+Tersedia"; }}
-                                    />
-                                </div>
-                                <div className="md:w-1/2 text-left">
-                                    <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                                        Champion Sport Academy didirikan dengan visi untuk mengembangkan bakat-bakat olahraga muda dan dewasa. Kami percaya bahwa setiap individu memiliki potensi juara yang dapat diasah melalui pelatihan yang tepat, disiplin, dan lingkungan yang mendukung.
-                                    </p>
-                                    <p className="text-lg text-gray-700 leading-relaxed">
-                                        Tim pelatih kami terdiri dari para profesional berpengalaman dan berdedikasi yang siap membimbing Anda mencapai puncak performa. Kami fokus pada pengembangan teknik, kekuatan fisik, mental, dan strategi permainan.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Programs Section */}
-                    <section id="programs" className="py-16 bg-blue-50">
-                        <div className="container mx-auto px-6 text-center">
-                            <h2 className="text-4xl font-bold text-blue-800 mb-12">Program Kami</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-                                {/* Program Card 1: Karate */}
-                                <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                                    <div className="text-blue-600 mb-4 flex justify-center">
-                                        <KarateIcon />
-                                    </div>
-                                    <h3 className="text-2xl font-semibold text-gray-800 mb-3">Karate</h3>
-                                    <p className="text-gray-600">Pelatihan karate untuk semua tingkatan, dari pemula hingga mahir, fokus pada disiplin, kekuatan, dan teknik pukulan/tendangan.</p>
-                                </div>
-                                {/* Program Card 2: Hapkido */}
-                                <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                                    <div className="text-blue-600 mb-4 flex justify-center">
-                                        <ShieldIcon />
-                                    </div>
-                                    <h3 className="text-2xl font-semibold text-gray-800 mb-3">Hapkido</h3>
-                                    <p className="text-gray-600">Menguasai seni bela diri Hapkido dengan fokus pada teknik kuncian, bantingan, dan pertahanan diri yang efektif.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Contact Section */}
-                    <section id="contact" className="py-16 bg-blue-600 text-white">
-                        <div className="container mx-auto px-6 text-center">
-                            <h2 className="text-4xl font-bold mb-8">Hubungi Kami</h2>
-                            <p className="text-lg mb-8">Siap untuk memulai perjalanan bela diri Anda? Hubungi kami sekarang!</p>
-                            <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
-                                <div className="flex items-center space-x-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-3.67-3.67A19.79 19.79 0 0 1 2.05 4.18a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2.18 19.79 19.79 0 0 1-.64 3.42 2 2 0 0 1 .45 2.11L9.4 12.5a2 2 0 0 0 .9 1.9c.8.6 1.9.9 3.1.9a19.79 19.79 0 0 0 3.42-.64 2 2 0 0 1 2.18 2z"/></svg>
-                                    <a href="tel:089655445151" className="text-lg hover:underline">0896-5544-5151</a>
-                                </div>
-                                <div className="flex items-center space-x-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-map-pin"><path d="M12 18.7c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6z"/><circle cx="12" cy="12" r="3"/></svg>
-                                    <p className="text-lg">Exhibition Hall Lt.2, Cimahi Mall, Cimahi</p>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* Footer */}
-                    <footer className="bg-gray-900 text-gray-400 py-6 text-center rounded-t-lg">
-                        <div className="container mx-auto px-6">
-                            <p>&copy; 2024 Champion Sport Academy. Hak Cipta Dilindungi Undang-Undang.</p>
-                        </div>
-                    </footer>
+    <section id="programs" class="py-20 container mx-auto px-4">
+        <h3 class="text-3xl font-bold text-center mb-12 uppercase tracking-widest">Program Unggulan</h3>
+        <div class="grid md:grid-cols-2 gap-10">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border-t-4 border-gold">
+                <div class="p-8">
+                    <div class="text-maroon text-4xl mb-4"><i class="fas fa-user-ninja"></i></div>
+                    <h4 class="text-2xl font-bold mb-2">Champion Karate Team</h4>
+                    <p class="text-gray-600 mb-4">Fokus pada disiplin, kecepatan, dan pembentukan karakter anak (SD) hingga remaja.</p>
+                    <ul class="text-sm space-y-2 mb-6">
+                        <li><i class="fas fa-check text-gold mr-2"></i> Dibimbing Senpai Opik (DAN III)</li>
+                        <li><i class="fas fa-check text-gold mr-2"></i> Jalur Prestasi & Atlet</li>
+                    </ul>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="font-bold">Jadwal:</p>
+                        <p>Rabu & Jumat | 16.00 - 18.00</p>
+                    </div>
                 </div>
-            );
-        };
+            </div>
 
-        // Render the App component into the root div
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-    </script>
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border-t-4 border-gold">
+                <div class="p-8">
+                    <div class="text-maroon text-4xl mb-4"><i class="fas fa-hand-holding-magic"></i></div>
+                    <h4 class="text-2xl font-bold mb-2">Champion Hapkido</h4>
+                    <p class="text-gray-600 mb-4">Seni beladiri kuncian dan bantingan yang dinamis untuk pertahanan diri praktis.</p>
+                    <ul class="text-sm space-y-2 mb-6">
+                        <li><i class="fas fa-check text-gold mr-2"></i> Dibimbing Sabeum Opik (DAN I)</li>
+                        <li><i class="fas fa-check text-gold mr-2"></i> Teknik Kuncian & Praktis</li>
+                    </ul>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="font-bold">Jadwal:</p>
+                        <p>Selasa & Jumat | 19.00 - 21.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-maroon text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h3 class="text-3xl font-bold mb-6 text-gold">Dilatih Oleh Profesional</h3>
+            <p class="text-xl mb-2">Senpai Opik</p>
+            <p class="text-gray-300">DAN III Karate | DAN I Hapkido</p>
+            <p class="mt-4 max-w-xl mx-auto">Berpengalaman bertahun-tahun dalam mencetak karakter tangguh dan atlet berprestasi di wilayah Bandung Raya.</p>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="font-bold text-gold mb-2">CHAMPION SPORT ACADEMY</p>
+            <p class="mb-4">Lokasi: Cimahi Mall, Kota Cimahi</p>
+            <div class="flex justify-center space-x-6 mb-8">
+                <a href="https://wa.me/6289655445151" class="text-2xl hover:text-gold"><i class="fab fa-whatsapp"></i></a>
+                <a href="#" class="text-2xl hover:text-gold"><i class="fab fa-instagram"></i></a>
+            </div>
+            <hr class="border-gray-700 mb-8">
+            <p class="text-sm text-gray-500">&copy; 2024 Champion Sport Academy. All rights reserved.</p>
+        </div>
+    </footer>
+
 </body>
 </html>
