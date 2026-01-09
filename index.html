@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Champion Sport Academy | Karate & Hapkido Cimahi Mall</title>
-    <meta name="description" content="Champion Sport Academy (CSA) - Pusat pelatihan bela diri profesional Karate dan Hapkido di Cimahi Mall dan Kota Baru Parahyangan. Membangun karakter juara bersama Senpai Opik.">
-    <meta name="keywords" content="karate cimahi, hapkido cimahi, champion sport academy, bela diri cimahi, senpai opik, karate cimahi mall">
-    
     <link rel="icon" type="image/png" href="logo-csa.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -32,27 +28,39 @@
     <nav class="bg-maroon/95 backdrop-blur-md text-white p-4 sticky top-0 z-50 border-b border-gold/30">
         <div class="container mx-auto flex justify-between items-center px-4">
             <div class="flex items-center gap-3">
-                <img src="logo-csa.png" alt="Logo CSA" class="h-10 md:h-12 w-auto border border-gold rounded-full bg-white shadow-lg">
+                <img src="logo-csa.png" alt="Logo CSA" class="h-10 md:h-12 w-10 md:w-12 border border-gold rounded-full bg-white shadow-lg object-contain p-0.5">
                 <div class="flex flex-col">
                     <span class="text-lg font-display font-bold text-gold leading-none">CHAMPION</span>
                     <span class="text-[10px] tracking-[0.2em] italic">SPORT ACADEMY</span>
                 </div>
             </div>
+
+            <button id="mobile-toggle" class="md:hidden text-gold focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+
             <div class="hidden md:flex space-x-8 items-center text-xs font-semibold">
                 <a href="#home" class="hover:text-gold smooth-transition uppercase">Home</a>
                 <a href="#programs" class="hover:text-gold smooth-transition uppercase">Program</a>
                 <a href="#coach" class="hover:text-gold smooth-transition uppercase">Pelatih</a>
                 <a href="#schedule" class="hover:text-gold smooth-transition uppercase">Jadwal</a>
-                <a href="#location" class="hover:text-gold smooth-transition uppercase">Lokasi</a>
-                <a href="rapor.html" class="hover:text-yellow-400 transition uppercase">Rapor Atlet</a>
+                <a href="rapor.html" class="bg-gold/10 text-gold border border-gold/50 px-4 py-1.5 rounded-full hover:bg-gold hover:text-maroon smooth-transition uppercase">Rapor Atlet</a>
                 <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon px-6 py-2 rounded-full shadow-lg hover:scale-110 smooth-transition font-bold uppercase">Daftar</a>
             </div>
         </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-maroon border-t border-gold/20 mt-4 p-4 flex flex-col space-y-4 text-sm font-semibold text-center">
+            <a href="#home" class="mobile-link py-2 border-b border-gold/10">Home</a>
+            <a href="#programs" class="mobile-link py-2 border-b border-gold/10">Program</a>
+            <a href="#schedule" class="mobile-link py-2 border-b border-gold/10">Jadwal</a>
+            <a href="rapor.html" class="mobile-link py-2 border-b border-gold/10 text-gold">Rapor Atlet</a>
+            <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon py-3 rounded-xl uppercase font-bold">Daftar Trial</a>
+        </div>
     </nav>
 
-    <a href="https://wa.me/6289655445151?text=Halo%20Admin%20CSA,%20saya%20ingin%20klaim%20trial%20gratis!" target="_blank" class="floating-wa group">
-        <span class="bg-white text-gray-800 px-4 py-2 rounded-full shadow-xl text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-gold">Tanya Jadwal & Trial?</span>
-        <div class="bg-[#25D366] text-white w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+    <a href="https://wa.me/6289655445151?text=Halo%20Admin%20CSA" target="_blank" class="floating-wa group">
+        <span class="bg-white text-gray-800 px-4 py-2 rounded-full shadow-xl text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-gold">Tanya Jadwal?</span>
+        <div class="bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
             <i class="fab fa-whatsapp text-3xl"></i>
         </div>
     </a>
@@ -62,103 +70,31 @@
             <div class="absolute inset-0 hero-overlay"></div>
         </div>
         <div class="relative z-10 max-w-4xl px-6" data-aos="zoom-in">
-            <div class="inline-block bg-gold/20 border border-gold text-gold px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4">
-                Grand Launching - Januari 2026
-            </div>
             <h1 class="text-5xl md:text-8xl font-display font-bold mb-6 leading-tight uppercase">The New Era Of<br><span class="text-gold italic text-6xl md:text-9xl">Champions</span></h1>
-            <p class="text-lg md:text-xl mb-10 text-gray-300 font-light max-w-2xl mx-auto italic border-y border-gold/30 py-4">"Melanjutkan tradisi juara melalui sistem pelatihan yang telah teruji melahirkan atlet-atlet nasional."</p>
-            <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon px-10 py-4 rounded-full font-bold shadow-2xl hover:scale-105 smooth-transition flex items-center justify-center gap-2 mx-auto w-fit">
-                <i class="fas fa-medal"></i> TRIAL GRATIS
+            <p class="text-lg md:text-xl mb-10 text-gray-300 border-y border-gold/30 py-4 italic">"Melanjutkan tradisi juara melalui sistem pelatihan yang teruji."</p>
+            <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon px-10 py-4 rounded-full font-bold shadow-2xl hover:scale-105 smooth-transition mx-auto w-fit block">
+                <i class="fas fa-medal mr-2"></i> TRIAL GRATIS
             </a>
         </div>
     </section>
 
-    <section id="programs" class="py-24 container mx-auto px-6">
-        <div class="text-center mb-16" data-aos="fade-up">
-            <h2 class="text-4xl font-display font-bold text-maroon uppercase">Program Unggulan</h2>
-            <div class="w-24 h-1 bg-gold mx-auto mt-4"></div>
-        </div>
-        <div class="grid md:grid-cols-2 gap-12">
-            <div class="bg-white rounded-3xl shadow-xl p-10 text-center border-t-4 border-maroon group" data-aos="fade-right">
-                <i class="fas fa-fist-raised text-5xl text-gold mb-6 group-hover:scale-110 smooth-transition inline-block"></i>
-                <h3 class="text-2xl font-display font-bold text-maroon uppercase">Karate Team</h3>
-                <p class="text-gray-600 my-6">Fokus pada teknik Kata & Kumite profesional untuk membangun disiplin dan kepercayaan diri.</p>
-                <a href="https://tally.so/r/yPNQRB" target="_blank" class="text-xs font-bold border-b-2 border-maroon hover:text-gold hover:border-gold transition uppercase tracking-widest">Daftar Sekarang</a>
-            </div>
-            <div class="bg-white rounded-3xl shadow-xl p-10 text-center border-t-4 border-gold group" data-aos="fade-left">
-                <i class="fas fa-shield-alt text-5xl text-maroon mb-6 group-hover:scale-110 smooth-transition inline-block"></i>
-                <h3 class="text-2xl font-display font-bold text-maroon uppercase">Hapkido Self-Defense</h3>
-                <p class="text-gray-600 my-6">Seni bela diri pertahanan diri dinamis dengan teknik kuncian, bantingan, dan lemparan efektif.</p>
-                <a href="https://tally.so/r/yPNQRB" target="_blank" class="text-xs font-bold border-b-2 border-maroon hover:text-gold hover:border-gold transition uppercase tracking-widest">Daftar Sekarang</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="coach" class="bg-maroon py-24 text-white">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
-            <img src="senpai-opik.jpg" alt="Senpai Opik" class="w-64 h-64 md:w-80 md:h-80 rounded-2xl border-4 border-gold object-cover shadow-2xl" data-aos="fade-right">
-            <div data-aos="fade-left" class="max-w-xl">
-                <h2 class="text-gold font-display text-4xl font-bold mb-2 uppercase">Senpai Opik</h2>
-                <p class="text-gray-400 tracking-widest mb-6 font-semibold uppercase">DAN III Karate</p>
-                <p class="text-xl italic border-l-4 border-gold pl-6 py-2 leading-relaxed font-light mb-4">
-                    "Setiap juara dimulai dari langkah yang disiplin. Kami menempa karakter tangguh di jantung kota Cimahi."
-                </p>
-                <p class="text-gray-300 leading-relaxed">Berdedikasi tinggi dalam mencetak atlet-atlet berprestasi melalui sistem pelatihan yang disiplin namun membangun karakter positif bagi setiap murid.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="schedule" class="py-24 bg-white">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl font-display font-bold text-maroon mb-16 uppercase" data-aos="fade-up">Jadwal Latihan</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="p-8 border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition" data-aos="fade-up">
-                    <h4 class="text-gold font-bold mb-4 uppercase tracking-widest text-xs">Hapkido (Cimahi Mall)</h4>
-                    <p class="text-2xl font-display font-bold text-maroon">Selasa & Jumat</p>
-                    <p class="text-gray-500 mt-2 font-semibold">19.00 - 21.00 WIB</p>
-                </div>
-                <div class="p-8 border-2 border-gold rounded-3xl shadow-xl bg-maroon text-white scale-105" data-aos="fade-up" data-aos-delay="100">
-                    <h4 class="text-gold font-bold mb-4 uppercase tracking-widest text-xs">Karate (Cimahi Mall)</h4>
-                    <p class="text-2xl font-display font-bold">Rabu & Jumat</p>
-                    <p class="text-gray-300 mt-2 font-semibold">16.00 - 18.00 WIB</p>
-                </div>
-                <div class="p-8 border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition" data-aos="fade-up" data-aos-delay="200">
-                    <h4 class="text-gold font-bold mb-4 uppercase tracking-widest text-xs">Karate (KBP)</h4>
-                    <p class="text-2xl font-display font-bold text-maroon">Minggu Pagi</p>
-                    <p class="text-gray-500 mt-2 font-semibold">07.00 - 09.00 WIB</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="location" class="py-24 bg-gray-100">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12" data-aos="fade-up">
-                <h2 class="text-4xl font-display font-bold text-maroon uppercase">Lokasi Kami</h2>
-                <div class="w-24 h-1 bg-gold mx-auto mt-4"></div>
-                <p class="mt-6 text-gray-500">Exhibition Hall Lt. 2, Cimahi Mall, Jawa Barat</p>
-            </div>
-            <div class="max-w-5xl mx-auto map-container shadow-2xl" data-aos="zoom-in">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.0263304130094!2d107.5412499757914!3d-6.887438467396783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e44207f2df41%3A0xc3f982a033501a4e!2sCimahi%20Mall!5e0!3m2!1sid!2sid!4v1716000000000!5m2!1sid!2sid" 
-                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-black text-white py-16 text-center border-t-4 border-gold">
-        <div class="container mx-auto px-6">
-            <p class="font-display text-gold text-2xl mb-2 italic uppercase tracking-widest">Champion Sport Academy</p>
-            <div class="flex justify-center gap-10 mb-10 text-3xl text-gold pt-8">
-                <a href="https://wa.me/6289655445151" target="_blank" class="hover:text-white transition-all"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.instagram.com/opik0027" target="_blank" class="hover:text-white transition-all"><i class="fab fa-instagram"></i></a>
-            </div>
-            <p class="text-[9px] text-gray-800 tracking-[0.6em] uppercase border-t border-gray-900 pt-8">© 2026 Champion Sport Academy. All Rights Reserved.</p>
-        </div>
-    </footer>
-
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>AOS.init({ duration: 1000, once: true });</script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+        
+        const btn = document.getElementById('mobile-toggle');
+        const menu = document.getElementById('mobile-menu');
+        const links = document.querySelectorAll('.mobile-link');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
 </body>
 </html>
