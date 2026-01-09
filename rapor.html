@@ -12,21 +12,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { maroon: '#630000', gold: '#D4AF37' },
+                    fontFamily: { display: ['Playfair Display', 'serif'], sans: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Poppins:wght@300;400;600&display=swap");
-        
         body { font-family: "Poppins", sans-serif; background-color: #f8fafc; }
         .font-sport { font-family: "Oswald", sans-serif; }
-        
-        /* Tema Warna Champion (Sesuai index.html) */
-        .bg-maroon { background-color: #630000; }
-        .text-gold { color: #D4AF37; }
-        .border-gold { border-color: #D4AF37; }
-        
+        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #F9E27D 50%, #B8860B 100%); }
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #F9E27D 50%, #B8860B 100%); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -36,29 +38,38 @@
             <div class="flex items-center gap-3">
                 <img src="logo-csa.png" alt="Logo CSA" class="h-10 md:h-12 w-10 md:w-12 border border-gold rounded-full bg-white shadow-lg object-contain p-0.5">
                 <div class="flex flex-col leading-none">
-                    <span class="text-lg font-bold text-gold uppercase tracking-tight">Champion</span>
+                    <span class="text-lg font-display font-bold text-gold uppercase tracking-tight">Champion</span>
                     <span class="text-[9px] tracking-[0.2em] italic uppercase text-gray-300">Sport Academy</span>
                 </div>
             </div>
             
-            <div class="flex items-center gap-2">
-                <a href="index.html" class="text-[10px] md:text-xs bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full border border-white/20 transition uppercase font-bold">
-                    <i class="fa-solid fa-house mr-1"></i> Home
-                </a>
-                <button onclick="refreshData()" class="text-[10px] md:text-xs bg-gold text-maroon px-4 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition uppercase">
-                    <i class="fa-solid fa-sync mr-1"></i> Update
+            <button id="mobile-toggle" class="md:hidden text-gold focus:outline-none p-2">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+
+            <div class="hidden md:flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest">
+                <a href="index.html" class="hover:text-gold transition px-3 py-2">Home</a>
+                <button onclick="refreshData()" class="gold-gradient text-maroon px-4 py-2 rounded-full shadow-lg hover:scale-105 transition flex items-center gap-2">
+                    <i class="fa-solid fa-sync"></i> Update Data
                 </button>
             </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-maroon border-t border-gold/20 mt-4 p-4 flex flex-col space-y-4 text-sm font-semibold text-center rounded-b-2xl shadow-xl">
+            <a href="index.html" class="py-3 border-b border-gold/10 hover:text-gold uppercase">Home</a>
+            <button onclick="refreshData()" class="gold-gradient text-maroon py-4 rounded-xl uppercase font-bold shadow-lg flex items-center justify-center gap-2">
+                <i class="fa-solid fa-sync text-xs"></i> Update Data Sekarang
+            </button>
         </div>
     </nav>
 
     <div id="loading" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-maroon mb-4"></div>
-        <p class="text-gray-400 text-xs font-bold animate-pulse uppercase tracking-widest">Sinkronisasi Data...</p>
+        <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em]">Sinkronisasi Data...</p>
     </div>
 
     <div id="section-selector" class="flex-grow flex items-center justify-center p-4 fade-in hidden">
-        <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl max-w-md w-full border-t-[8px] border-maroon relative overflow-hidden">
+        <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl max-w-md w-full border-t-[8px] border-maroon relative">
             <h2 class="text-2xl font-sport text-gray-800 text-center mb-6 uppercase tracking-tight">Pilih Rapor Atlet</h2>
             
             <div class="space-y-4">
@@ -93,12 +104,12 @@
                     <h1 id="txtNama" class="text-3xl font-sport font-bold text-gray-800 uppercase tracking-tight">NAMA ATLET</h1>
                     <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
                         <span id="txtCabor" class="bg-maroon/5 text-maroon border border-maroon/10 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest">PROGRAM</span>
-                        <span id="txtWilayah" class="text-xs text-gray-400 font-bold uppercase tracking-wider italic"><i class="fa-solid fa-location-dot mr-1"></i> Wilayah</span>
+                        <span id="txtWilayah" class="text-xs text-gray-400 font-bold uppercase tracking-wider italic">Wilayah</span>
                     </div>
                 </div>
-                <div class="mt-8 md:mt-0 flex gap-6 justify-center bg-gray-50 p-6 rounded-3xl border border-gray-100">
+                <div class="mt-8 md:mt-0 flex gap-6 justify-center bg-gray-50 p-6 rounded-3xl border border-gray-100 mx-auto md:mx-0 w-fit">
                     <div class="text-center border-r pr-6 border-gray-200">
-                        <div class="text-[9px] text-gray-400 uppercase font-bold tracking-[0.2em] mb-1">Skor Fisik</div>
+                        <div class="text-[9px] text-gray-400 uppercase font-bold tracking-[0.2em] mb-1">Skor</div>
                         <div id="txtTotalSkor" class="text-5xl font-sport font-bold text-maroon leading-none">00</div>
                     </div>
                     <div class="text-center flex flex-col justify-center">
@@ -132,7 +143,7 @@
                                 <span>Target: 12x</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-4 overflow-hidden shadow-inner p-1">
-                                <div id="barAbsen" class="gold-gradient h-full rounded-full transition-all duration-1000 shadow-sm" style="width: 0%"></div>
+                                <div id="barAbsen" class="gold-gradient h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
@@ -141,15 +152,14 @@
 
             <div class="md:col-span-5">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 h-full flex flex-col">
-                    <h3 class="font-sport text-xl text-gray-800 border-b pb-4 mb-8 uppercase tracking-widest">Rincian Indikator</h3>
+                    <h3 class="font-sport text-xl text-gray-800 border-b pb-4 mb-8 uppercase tracking-widest">Detail Indikator</h3>
                     <div class="space-y-5 flex-grow" id="tableContainer"></div>
-                    
                     <div class="mt-10 bg-gold/5 border-l-4 border-gold p-5 rounded-r-2xl">
                         <div class="flex items-center gap-2 mb-2">
-                            <i class="fa-solid fa-quote-left text-gold text-xs"></i>
+                            <i class="fa-solid fa-quote-left text-gold text-[10px]"></i>
                             <span class="text-[10px] font-bold text-gold uppercase tracking-[0.2em]">Pesan Pelatih</span>
                         </div>
-                        <p id="txtCatatan" class="text-sm text-gray-600 leading-relaxed italic font-medium">"..."</p>
+                        <p id="txtCatatan" class="text-xs text-gray-600 leading-relaxed italic font-medium">"..."</p>
                     </div>
                 </div>
             </div>
@@ -157,28 +167,31 @@
     </div>
 
     <footer class="py-16 text-center text-gray-400">
-        <img src="logo-csa.png" alt="Footer Logo" class="h-12 w-12 mx-auto mb-4 opacity-50 grayscale border border-gray-200 rounded-full">
         <p class="text-[10px] uppercase font-bold tracking-[0.3em]">© 2026 Champion Sport Academy System</p>
     </footer>
 
     <script>
-        // --- KONFIGURASI ---
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAg9NhPDYcmxERNMMc0xPAyl71vyQDqu17yXbPlAyJmcNdBd5xHrE8NYSaT-PcPeNksGYdV9lb97hC/pub?gid=1540868773&single=true&output=csv";
-        const CACHE_NAME = "csa_rapor_cache";
-        const CACHE_TIME = 30 * 60 * 1000; // 30 Menit Cache
+        const CACHE_NAME = "csa_cache_v3";
+        const CACHE_TIME = 30 * 60 * 1000;
 
         let dbData = {};
         let chartInstance = null;
         const labelsTes = ["Push Up", "Sit Up", "Power", "Agility", "VO2Max", "Flexibility"];
 
-        // 1. Inisialisasi & Caching
+        // Toggle Mobile Menu
+        const toggleBtn = document.getElementById('mobile-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        toggleBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
         window.onload = () => {
             const cachedData = localStorage.getItem(CACHE_NAME);
             const cachedTime = localStorage.getItem(CACHE_NAME + "_time");
             const now = new Date().getTime();
 
             if (cachedData && cachedTime && (now - cachedTime < CACHE_TIME)) {
-                console.log("Loading from Cache...");
                 dbData = JSON.parse(cachedData);
                 hideLoading();
             } else {
@@ -194,8 +207,7 @@
                     localStorage.setItem(CACHE_NAME, JSON.stringify(dbData));
                     localStorage.setItem(CACHE_NAME + "_time", new Date().getTime());
                     hideLoading();
-                },
-                error: () => alert("Gagal mengambil data. Cek koneksi internet.")
+                }
             });
         }
 
@@ -209,52 +221,38 @@
             document.getElementById("section-selector").classList.remove("hidden");
         }
 
-        // 2. Olah Data
         function processData(rows) {
             dbData = { Cimahi: [], KabBandung: [], KBB: [] };
             rows.forEach(row => {
                 const name = row["NAMA LENGKAP"];
                 const wil = row["WILAYAH"] ? row["WILAYAH"].toLowerCase().replace(/[\s\.]/g, "") : "";
                 if(!name || !wil) return;
-
-                let key = "";
-                if(wil.includes("cimahi")) key = "Cimahi";
-                else if(wil.includes("kabb") || wil.includes("bandungbarat")) key = "KBB";
-                else if(wil.includes("bandung")) key = "KabBandung";
-
+                let key = wil.includes("cimahi") ? "Cimahi" : (wil.includes("kabb") || wil.includes("bandungbarat") ? "KBB" : (wil.includes("bandung") ? "KabBandung" : ""));
                 if(key) {
                     dbData[key].push({
-                        nama: name, 
-                        cabor: row["PROGRAM YANG DIPILIH"] || "-",
+                        nama: name, cabor: row["PROGRAM YANG DIPILIH"] || "-",
                         foto: row["FOTO TERBAIK"] && row["FOTO TERBAIK"].length > 10 ? row["FOTO TERBAIK"] : `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=630000&color=fff`,
                         nilai: [parseInt(row.PUSHUP_NILAI)||0, parseInt(row.SITUP_NILAI)||0, parseInt(row.POWER_NILAI)||0, parseInt(row.AGILITY_NILAI)||0, parseInt(row.VO2_NILAI)||0, parseInt(row.FLEX_NILAI)||0],
                         detail: [row.PUSHUP_HASIL||"0", row.SITUP_HASIL||"0", row.POWER_HASIL||"0", row.AGILITY_HASIL||"0", row.VO2_HASIL||"0", row.FLEX_HASIL||"0"],
-                        totalSkor: parseInt(row.TOTAL_SKOR)||0, 
-                        predikat: row.PREDIKAT||"Belum Tes",
-                        absensi: parseInt(row.ABSENSI)||0, 
-                        catatan: row.CATATAN || "Teruslah berlatih dengan semangat dan disiplin tinggi!"
+                        totalSkor: parseInt(row.TOTAL_SKOR)||0, predikat: row.PREDIKAT||"Belum Tes",
+                        absensi: parseInt(row.ABSENSI)||0, catatan: row.CATATAN || "Tetap semangat berlatih!"
                     });
                 }
             });
         }
 
-        // 3. UI Logic
         function loadAtlet() {
             const wil = document.getElementById("selectPengcab").value;
             const selectNama = document.getElementById("selectNama");
             const divNama = document.getElementById("divSelectNama");
             const btn = document.getElementById("btnLihat");
-            
             selectNama.innerHTML = '<option value="">-- Pilih Nama Atlet --</option>';
-
             if (wil && dbData[wil]) {
                 divNama.classList.remove("opacity-30", "pointer-events-none");
-                dbData[wil].forEach((atlet, index) => {
-                    const opt = document.createElement("option");
-                    opt.value = index; opt.innerHTML = atlet.nama;
+                dbData[wil].forEach((a, i) => {
+                    const opt = document.createElement("option"); opt.value = i; opt.innerHTML = a.nama;
                     selectNama.appendChild(opt);
                 });
-                
                 selectNama.onchange = function() {
                     if (this.value !== "") {
                         btn.className = "w-full bg-maroon text-white font-bold py-4 rounded-2xl shadow-xl transition hover:scale-[1.02] active:scale-95 uppercase tracking-widest text-xs";
@@ -268,8 +266,6 @@
             const wil = document.getElementById("selectPengcab").value;
             const idx = document.getElementById("selectNama").value;
             const a = dbData[wil][idx];
-
-            // Tampilkan Teks & Gambar
             document.getElementById("imgAtlet").src = a.foto;
             document.getElementById("txtNama").innerText = a.nama;
             document.getElementById("txtCabor").innerText = a.cabor;
@@ -280,47 +276,35 @@
             document.getElementById("barAbsen").style.width = a.absensi + "%";
             document.getElementById("txtCatatan").innerText = `"${a.catatan}"`;
             
-            // LOGIKA ABSENSI 12 SESI
-            // Contoh: 16% dari 100% * 12 = 1.92 -> dibulatkan jadi 2
-            const jumlahHadir = Math.round((a.absensi / 100) * 12);
-            document.getElementById("txtAbsenDetail").innerText = `${jumlahHadir} dari 12x Latihan dalam sebulan`;
+            const hadir = Math.round((a.absensi/100)*12);
+            document.getElementById("txtAbsenDetail").innerText = hadir + " dari 12x Latihan dalam sebulan";
 
-            // Tentukan Warna Predikat
             const p = document.getElementById("txtPredikat");
             p.className = "text-[10px] font-bold text-white px-3 py-1.5 rounded-xl uppercase tracking-wider " + 
                          (a.totalSkor >= 27 ? "bg-blue-600" : (a.totalSkor >= 21 ? "bg-green-600" : "bg-maroon"));
 
-            // Render Tabel Detail
             const tbl = document.getElementById("tableContainer");
             tbl.innerHTML = "";
-            labelsTes.forEach((label, i) => {
-                const nilai = a.nilai[i];
-                const hasilAsli = a.detail[i];
-                const color = nilai >= 5 ? "bg-blue-600" : (nilai >= 4 ? "bg-green-500" : "bg-gold");
-                
+            labelsTes.forEach((l, i) => {
+                const n = a.nilai[i];
+                const color = n >= 5 ? "bg-blue-600" : (n >= 4 ? "bg-green-500" : "bg-gold");
                 tbl.innerHTML += `
                 <div class="flex items-center justify-between text-[11px] border-b border-gray-50 pb-4 last:border-0">
-                    <div class="w-1/3 font-bold text-gray-500 uppercase tracking-widest">${label}</div>
-                    <div class="w-1/3 text-center font-bold text-gray-800">${hasilAsli}</div>
+                    <div class="w-1/3 font-bold text-gray-500 uppercase tracking-widest">${l}</div>
+                    <div class="w-1/3 text-center font-bold text-gray-800">${a.detail[i]}</div>
                     <div class="w-1/3 flex items-center gap-3 justify-end">
-                        <div class="w-14 bg-gray-100 rounded-full h-1.5 overflow-hidden shadow-inner">
-                            <div class="${color} h-full" style="width: ${nilai * 20}%"></div>
-                        </div>
-                        <span class="font-bold text-maroon w-4 text-right">${nilai}</span>
+                        <div class="w-14 bg-gray-100 rounded-full h-1.5 overflow-hidden shadow-inner"><div class="${color} h-full" style="width: ${n * 20}%"></div></div>
+                        <span class="font-bold text-maroon w-4 text-right">${n}</span>
                     </div>
                 </div>`;
             });
-
-            // Grafik Radar
             renderChart(a.nilai);
-
-            // Ganti Layar
             document.getElementById("section-selector").classList.add("hidden");
             document.getElementById("section-report").classList.remove("hidden");
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
-        function renderChart(dataValues) {
+        function renderChart(vals) {
             const ctx = document.getElementById("radarChart").getContext("2d");
             if (chartInstance) chartInstance.destroy();
             chartInstance = new Chart(ctx, {
@@ -328,27 +312,12 @@
                 data: {
                     labels: labelsTes,
                     datasets: [{
-                        label: "Hasil Tes",
-                        data: dataValues,
-                        backgroundColor: "rgba(99, 0, 0, 0.2)",
-                        borderColor: "#630000",
-                        borderWidth: 3,
-                        pointBackgroundColor: "#D4AF37",
-                        pointBorderColor: "#fff",
-                        pointRadius: 5
+                        data: vals, backgroundColor: "rgba(99, 0, 0, 0.2)", borderColor: "#630000", borderWidth: 3, pointBackgroundColor: "#D4AF37", pointBorderColor: "#fff", pointRadius: 5
                     }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    scales: {
-                        r: {
-                            angleLines: { color: "#f1f5f9" },
-                            grid: { color: "#f1f5f9" },
-                            pointLabels: { font: { size: 11, weight: "bold", family: "Oswald" }, color: "#64748b" },
-                            suggestedMin: 0, suggestedMax: 5,
-                            ticks: { display: false }
-                        }
-                    },
+                    scales: { r: { angleLines: { color: "#f1f5f9" }, grid: { color: "#f1f5f9" }, pointLabels: { font: { size: 11, weight: "bold", family: "Oswald" }, color: "#64748b" }, suggestedMin: 0, suggestedMax: 5, ticks: { display: false } } },
                     plugins: { legend: { display: false } }
                 }
             });
