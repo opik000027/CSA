@@ -24,9 +24,9 @@
     </script>
     <style>
         .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #F9E27D 50%, #B8860B 100%); }
-        .hero-overlay { background: rgba(0, 0, 0, 0.75); }
+        .hero-overlay { background: rgba(0, 0, 0, 0.7); }
         .smooth-transition { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .map-container iframe { width: 100%; height: 450px; border-radius: 2rem; border: 4px solid #D4AF37; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .map-container iframe { width: 100%; height: 400px; border-radius: 1.5rem; border: 2px solid #D4AF37; }
         .floating-wa { position: fixed; bottom: 30px; right: 30px; z-index: 100; display: flex; align-items: center; gap: 10px; }
     </style>
 </head>
@@ -37,38 +37,38 @@
             <div class="flex items-center gap-3">
                 <img src="logo-csa.png" alt="Logo CSA" class="h-10 md:h-12 w-10 md:w-12 border border-gold rounded-full bg-white shadow-lg object-contain p-0.5">
                 <div class="flex flex-col">
-                    <span class="text-lg font-display font-bold text-gold leading-none uppercase tracking-tighter">Champion</span>
-                    <span class="text-[9px] tracking-[0.3em] italic uppercase text-gray-300">Sport Academy</span>
+                    <span class="text-lg font-display font-bold text-gold leading-none">CHAMPION</span>
+                    <span class="text-[10px] tracking-[0.2em] italic">SPORT ACADEMY</span>
                 </div>
             </div>
 
-            <button id="mobile-toggle" class="md:hidden text-gold focus:outline-none p-2">
+            <button id="mobile-toggle" class="md:hidden text-gold focus:outline-none">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
 
-            <div class="hidden md:flex space-x-8 items-center text-[10px] font-bold uppercase tracking-widest">
-                <a href="#home" class="hover:text-gold smooth-transition">Home</a>
-                <a href="#programs" class="hover:text-gold smooth-transition">Program</a>
-                <a href="#coach" class="hover:text-gold smooth-transition">Pelatih</a>
-                <a href="#schedule" class="hover:text-gold smooth-transition">Jadwal</a>
-                <a href="rapor.html" class="text-gold border border-gold/40 px-4 py-1.5 rounded-full hover:bg-gold hover:text-maroon smooth-transition">Rapor Atlet</a>
-                <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon px-6 py-2 rounded-full shadow-lg hover:scale-105 smooth-transition">Daftar Trial</a>
+            <div class="hidden md:flex space-x-8 items-center text-xs font-semibold">
+                <a href="#home" class="hover:text-gold smooth-transition uppercase tracking-widest">Home</a>
+                <a href="#programs" class="hover:text-gold smooth-transition uppercase tracking-widest">Program</a>
+                <a href="#coach" class="hover:text-gold smooth-transition uppercase tracking-widest">Pelatih</a>
+                <a href="#schedule" class="hover:text-gold smooth-transition uppercase tracking-widest">Jadwal</a>
+                <a href="rapor.html" class="bg-gold/10 text-gold border border-gold/50 px-4 py-1.5 rounded-full hover:bg-gold hover:text-maroon smooth-transition uppercase tracking-widest">Rapor Atlet</a>
+                <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon px-6 py-2 rounded-full shadow-lg hover:scale-110 smooth-transition font-bold uppercase">Daftar</a>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-maroon border-t border-gold/20 mt-4 p-6 flex flex-col space-y-4 text-sm font-semibold text-center rounded-b-3xl shadow-2xl">
-            <a href="#home" class="mobile-link py-3 border-b border-white/5 hover:text-gold uppercase tracking-widest">Home</a>
-            <a href="#programs" class="mobile-link py-3 border-b border-white/5 hover:text-gold uppercase tracking-widest">Program</a>
-            <a href="#coach" class="mobile-link py-3 border-b border-white/5 hover:text-gold uppercase tracking-widest">Pelatih</a>
-            <a href="#schedule" class="mobile-link py-3 border-b border-white/5 hover:text-gold uppercase tracking-widest">Jadwal</a>
-            <a href="rapor.html" class="mobile-link py-3 border-b border-white/5 text-gold uppercase tracking-widest">Rapor Atlet</a>
-            <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon py-4 rounded-2xl font-bold shadow-lg">Daftar Trial Sekarang</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-maroon border-t border-gold/20 mt-4 p-4 flex flex-col space-y-4 text-sm font-semibold text-center uppercase tracking-widest">
+            <a href="#home" class="mobile-link py-2 border-b border-gold/10">Home</a>
+            <a href="#programs" class="mobile-link py-2 border-b border-gold/10">Program</a>
+            <a href="#coach" class="mobile-link py-2 border-b border-gold/10">Pelatih</a>
+            <a href="#schedule" class="mobile-link py-2 border-b border-gold/10">Jadwal</a>
+            <a href="rapor.html" class="mobile-link py-2 border-b border-gold/10 text-gold font-bold">Rapor Atlet</a>
+            <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon py-3 rounded-xl uppercase font-bold">Daftar Trial</a>
         </div>
     </nav>
 
     <a href="https://wa.me/6289655445151" target="_blank" class="floating-wa group">
-        <span class="bg-white text-gray-800 px-4 py-2 rounded-full shadow-xl text-xs font-bold opacity-0 group-hover:opacity-100 transition-all border border-gold">Tanya Admin?</span>
-        <div class="bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform ring-4 ring-white">
+        <span class="bg-white text-gray-800 px-4 py-2 rounded-full shadow-xl text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-gold">Tanya Jadwal?</span>
+        <div class="bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
             <i class="fab fa-whatsapp text-3xl"></i>
         </div>
     </a>
@@ -77,138 +77,123 @@
         <div class="absolute inset-0 bg-cover bg-center bg-fixed" style="background-image: url('bg-latihan.jpg');">
             <div class="absolute inset-0 hero-overlay"></div>
         </div>
-        <div class="relative z-10 max-w-4xl px-6" data-aos="zoom-out">
-            <div class="gold-gradient h-1.5 w-20 mx-auto mb-10 rounded-full"></div>
-            <h1 class="text-6xl md:text-9xl font-display font-bold mb-6 leading-none uppercase tracking-tighter">
-                Crafting<br><span class="text-gold italic tracking-normal">Legends</span>
+        <div class="relative z-10 max-w-4xl px-6" data-aos="zoom-in">
+            <h1 class="text-5xl md:text-8xl font-display font-bold mb-6 leading-tight uppercase tracking-tighter">
+                The New Era Of<br><span class="text-gold italic text-6xl md:text-9xl tracking-normal">Champions</span>
             </h1>
-            <p class="text-lg md:text-xl mb-12 text-gray-300 font-light tracking-widest uppercase">
-                Pusat Pelatihan Karate & Hapkido Profesional
+            <p class="text-lg md:text-xl mb-10 text-gray-300 border-y border-gold/30 py-4 italic font-light tracking-widest">
+                "Melanjutkan tradisi juara melalui sistem pelatihan modern yang teruji."
             </p>
-            <div class="flex flex-col md:flex-row gap-5 justify-center">
-                <a href="#programs" class="border-2 border-white px-10 py-4 rounded-full font-bold hover:bg-white hover:text-maroon transition uppercase tracking-widest text-xs">Explore Programs</a>
-                <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon px-10 py-4 rounded-full font-bold shadow-2xl hover:scale-105 transition uppercase tracking-widest text-xs">Get Trial Session</a>
-            </div>
+            <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon px-10 py-4 rounded-full font-bold shadow-2xl hover:scale-105 smooth-transition mx-auto w-fit block uppercase tracking-widest text-sm">
+                <i class="fas fa-medal mr-2"></i> KLAIM TRIAL GRATIS
+            </a>
         </div>
     </section>
 
-    <section id="programs" class="py-32 bg-white relative overflow-hidden">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-24" data-aos="fade-up">
-                <span class="text-gold font-bold uppercase tracking-[0.5em] text-[10px]">Martial Arts Excellence</span>
-                <h2 class="text-5xl md:text-6xl font-display font-bold text-maroon mt-4">Program Kami</h2>
+    <section id="programs" class="py-24 container mx-auto px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h2 class="text-4xl font-display font-bold text-maroon uppercase tracking-widest">Program Unggulan</h2>
+            <div class="w-24 h-1 bg-gold mx-auto mt-4"></div>
+            <p class="mt-6 text-gray-500 italic">"Pilih disiplin dirimu dan mulailah perjalanan menjadi juara."</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="group relative bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 transition hover:-translate-y-2" data-aos="fade-right">
+                <div class="h-72 overflow-hidden relative">
+                    <img src="karate.jpg" alt="Karate" class="w-full h-full object-cover group-hover:scale-110 smooth-transition">
+                    <div class="absolute top-4 left-4 bg-maroon text-gold text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Olympic Sport</div>
+                </div>
+                <div class="p-8 text-center">
+                    <h3 class="text-3xl font-display font-bold text-maroon uppercase mb-4 tracking-tight">Karate Team</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Fokus pada teknik Kata & Kumite profesional untuk membangun disiplin tinggi, kecepatan, dan mental petarung sejati.</p>
+                    <a href="https://tally.so/r/yPNQRB" target="_blank" class="inline-block bg-maroon text-gold px-10 py-3 rounded-full text-xs font-bold uppercase hover:bg-gold hover:text-maroon smooth-transition shadow-lg">Pelajari Selengkapnya</a>
+                </div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-16">
-                <div class="group relative" data-aos="fade-right">
-                    <div class="relative h-[600px] rounded-[3rem] overflow-hidden shadow-2xl">
-                        <img src="karate.jpg" alt="Karate Class" class="w-full h-full object-cover group-hover:scale-110 smooth-transition">
-                        <div class="absolute inset-0 bg-gradient-to-t from-maroon via-maroon/20 to-transparent"></div>
-                        <div class="absolute bottom-0 p-12 w-full">
-                            <div class="flex items-center gap-4 mb-6">
-                                <span class="h-px w-12 bg-gold"></span>
-                                <span class="text-gold font-bold uppercase tracking-widest text-xs">Olympic Discipline</span>
-                            </div>
-                            <h3 class="text-5xl font-display font-bold text-white mb-6 uppercase">Karate Team</h3>
-                            <p class="text-gray-300 mb-8 leading-relaxed italic">Metode pelatihan modern berbasis Sport Science untuk membangun mental pemenang dan fisik yang tangguh.</p>
-                            <a href="https://tally.so/r/yPNQRB" target="_blank" class="inline-flex items-center gap-3 bg-white text-maroon px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gold transition shadow-xl">
-                                Join Training <i class="fas fa-chevron-right text-[8px]"></i>
-                            </a>
-                        </div>
-                    </div>
+            <div class="group relative bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 transition hover:-translate-y-2" data-aos="fade-left">
+                <div class="h-72 overflow-hidden relative">
+                    <img src="hapkido.jpg" alt="Hapkido" class="w-full h-full object-cover group-hover:scale-110 smooth-transition">
+                    <div class="absolute top-4 left-4 bg-gold text-maroon text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Self Defense</div>
                 </div>
-
-                <div class="group relative" data-aos="fade-left">
-                    <div class="relative h-[600px] rounded-[3rem] overflow-hidden shadow-2xl border-b-8 border-gold">
-                        <img src="hapkido.jpg" alt="Hapkido Defense" class="w-full h-full object-cover group-hover:scale-110 smooth-transition">
-                        <div class="absolute inset-0 bg-gradient-to-t from-maroon via-maroon/20 to-transparent"></div>
-                        <div class="absolute bottom-0 p-12 w-full">
-                            <div class="flex items-center gap-4 mb-6">
-                                <span class="h-px w-12 bg-gold"></span>
-                                <span class="text-gold font-bold uppercase tracking-widest text-xs">Defense Intelligence</span>
-                            </div>
-                            <h3 class="text-5xl font-display font-bold text-white mb-6 uppercase">Hapkido</h3>
-                            <p class="text-gray-300 mb-8 leading-relaxed italic">Seni bela diri Korea yang mengutamakan harmoni antara kekuatan fisik dan teknik kuncian yang efektif.</p>
-                            <a href="https://tally.so/r/yPNQRB" target="_blank" class="inline-flex items-center gap-3 bg-gold text-maroon px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-white transition shadow-xl">
-                                Join Training <i class="fas fa-chevron-right text-[8px]"></i>
-                            </a>
-                        </div>
-                    </div>
+                <div class="p-8 text-center">
+                    <h3 class="text-3xl font-display font-bold text-maroon uppercase mb-4 tracking-tight">Hapkido Self-Defense</h3>
+                    <p class="text-gray-600 mb-8 leading-relaxed">Seni bela diri pertahanan diri yang dinamis dengan kombinasi teknik kuncian, bantingan, dan tendangan akrobatik.</p>
+                    <a href="https://tally.so/r/yPNQRB" target="_blank" class="inline-block bg-gold text-maroon px-10 py-3 rounded-full text-xs font-bold uppercase hover:bg-maroon hover:text-gold smooth-transition shadow-lg">Pelajari Selengkapnya</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="coach" class="py-32 bg-maroon text-white relative overflow-hidden">
-        <div class="container mx-auto px-6 flex flex-col lg:flex-row items-center gap-20">
-            <div class="relative lg:w-1/2" data-aos="zoom-in">
-                <div class="absolute -inset-4 border border-gold/30 rounded-[3rem] translate-x-8 translate-y-8"></div>
-                <img src="senpai-opik.png" alt="Senpai Opik" class="relative w-full aspect-square object-cover rounded-[3rem] shadow-2xl ring-2 ring-gold/20 grayscale hover:grayscale-0 transition duration-700">
+    <section id="coach" class="bg-maroon py-24 text-white overflow-hidden">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+            <div class="relative group" data-aos="fade-right">
+                <div class="absolute -inset-2 gold-gradient rounded-2xl blur opacity-20 group-hover:opacity-40 transition"></div>
+                <img src="senpai-opik.png" alt="Senpai Opik" class="relative w-72 h-72 md:w-96 md:h-96 rounded-2xl border-2 border-gold/50 object-cover shadow-2xl grayscale hover:grayscale-0 transition duration-700">
             </div>
-            
-            <div class="lg:w-1/2" data-aos="fade-left">
-                <span class="text-gold font-bold uppercase tracking-[0.4em] text-[10px]">Head of Academy</span>
-                <h2 class="text-5xl md:text-6xl font-display font-bold text-white mt-4 mb-2 uppercase">Senpai Opik</h2>
-                <p class="text-gold font-bold tracking-[0.3em] mb-10 italic">DAN III Karate</p>
-                <div class="bg-white/5 backdrop-blur-sm p-10 rounded-3xl border border-white/10 relative">
-                    <i class="fas fa-quote-left text-4xl text-gold/30 absolute top-6 left-6"></i>
-                    <p class="text-xl italic leading-relaxed text-gray-200 font-light">
-                        "Tradisi kami adalah mencetak juara. Bukan hanya di dalam matras, tapi juga juara dalam kehidupan nyata melalui disiplin bela diri yang murni."
+            <div data-aos="fade-left" class="max-w-xl text-center md:text-left">
+                <h2 class="text-gold font-display text-5xl font-bold mb-2 uppercase tracking-tight">Senpai Opik</h2>
+                <p class="text-gray-400 tracking-[0.3em] mb-8 font-bold uppercase italic text-sm">DAN III Karate</p>
+                <div class="bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 relative">
+                    <i class="fas fa-quote-left text-3xl text-gold/20 absolute top-4 left-4"></i>
+                    <p class="text-xl italic leading-relaxed text-gray-200 font-light mb-6">
+                        "Tradisi kami adalah mencetak juara. Bukan hanya di dalam matras, tapi juga juara dalam kehidupan melalui disiplin bela diri."
                     </p>
+                    <p class="text-sm text-gray-400 leading-relaxed uppercase tracking-widest font-bold border-t border-white/10 pt-4">Chief Instructor Champion Sport Academy</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="schedule" class="py-32 bg-white">
+    <section id="schedule" class="py-24 bg-white">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-24" data-aos="fade-up">
-                <h2 class="text-5xl md:text-6xl font-display font-bold text-maroon uppercase tracking-tighter">Training Schedule</h2>
-                <div class="w-20 h-1 bg-gold mx-auto mt-6"></div>
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-4xl font-display font-bold text-maroon uppercase tracking-widest">Jadwal Latihan</h2>
+                <div class="w-20 h-1 bg-gold mx-auto mt-4"></div>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-12">
-                <div class="bg-gray-50 rounded-[3rem] p-12 border border-gray-100 hover:shadow-2xl smooth-transition" data-aos="fade-up">
-                    <h3 class="text-3xl font-display font-bold text-maroon mb-10 uppercase flex items-center gap-4">
-                        <span class="bg-maroon text-gold p-3 rounded-2xl"><i class="fas fa-fist-raised"></i></span> Karate
-                    </h3>
-                    <div class="space-y-8">
-                        <div class="flex justify-between items-start border-b border-gray-200 pb-6">
-                            <div>
-                                <p class="font-bold text-lg text-gray-800">Cimahi Mall</p>
-                                <p class="text-xs text-gray-500 italic">Lt. 2 Exhibition Hall</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-maroon font-black uppercase text-xs">Selasa: 17.00 - 19.00</p>
-                                <p class="text-maroon font-black uppercase text-xs mt-1">Sabtu: 10.00 - 12.00</p>
-                            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-8 bg-maroon rounded-[2.5rem] shadow-xl text-white border-b-8 border-gold" data-aos="fade-up">
+                    <div class="bg-gold/10 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-fist-raised text-gold text-2xl"></i>
+                    </div>
+                    <h4 class="text-gold font-bold mb-1 uppercase tracking-widest text-xs">Karate (Cimahi Mall)</h4>
+                    <p class="text-[10px] text-gray-400 mb-6 italic uppercase">lt2 Exhibition Hall</p>
+                    <div class="space-y-3 font-semibold">
+                        <div class="flex justify-between border-b border-white/10 pb-2">
+                            <span>Selasa</span>
+                            <span class="text-gold">17:00 - 19:00</span>
                         </div>
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-bold text-lg text-gray-800">Kota Baru Parahyangan</p>
-                                <p class="text-xs text-gray-500 italic">Lapang Wangsakerta</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-maroon font-black uppercase text-xs">Minggu: 07.00 - 09.00</p>
-                            </div>
+                        <div class="flex justify-between">
+                            <span>Sabtu</span>
+                            <span class="text-gold">10:00 - 12:00</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-maroon rounded-[3rem] p-12 border-b-8 border-gold hover:shadow-2xl smooth-transition" data-aos="fade-up" data-aos-delay="200">
-                    <h3 class="text-3xl font-display font-bold text-white mb-10 uppercase flex items-center gap-4">
-                        <span class="bg-gold text-maroon p-3 rounded-2xl"><i class="fas fa-hand-holding-heart"></i></span> Hapkido
-                    </h3>
-                    <div class="space-y-8">
-                        <div class="flex justify-between items-start text-white">
-                            <div>
-                                <p class="font-bold text-lg text-gold">Cimahi Mall</p>
-                                <p class="text-xs text-gray-400 italic">Lt. 2 Exhibition Hall</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="font-black uppercase text-xs">Selasa, Rabu, Jumat</p>
-                                <p class="text-gold font-black uppercase text-xs mt-1">19.00 - 21.00</p>
-                            </div>
+                <div class="p-8 bg-gray-50 rounded-[2.5rem] shadow-xl border border-gray-100" data-aos="fade-up" data-aos-delay="100">
+                    <div class="bg-maroon/5 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-tree text-maroon text-2xl"></i>
+                    </div>
+                    <h4 class="text-maroon font-bold mb-1 uppercase tracking-widest text-xs">Karate (KBP)</h4>
+                    <p class="text-[10px] text-gray-400 mb-6 italic uppercase">Lapang Wangsakerta</p>
+                    <div class="space-y-3 font-bold">
+                        <div class="flex justify-between text-maroon">
+                            <span>Minggu</span>
+                            <span class="bg-maroon text-white px-3 py-1 rounded-lg text-xs">07:00 - 09:00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-8 bg-gray-50 rounded-[2.5rem] shadow-xl border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-maroon/5 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
+                        <i class="fas fa-hand-holding-heart text-maroon text-2xl"></i>
+                    </div>
+                    <h4 class="text-maroon font-bold mb-1 uppercase tracking-widest text-xs">Hapkido (Cimahi Mall)</h4>
+                    <p class="text-[10px] text-gray-400 mb-6 italic uppercase">lt2 Exhibition Hall</p>
+                    <div class="space-y-3 font-bold text-sm text-maroon">
+                        <p class="mb-1 uppercase text-[10px] text-gray-400">Selasa, Rabu, Jumat</p>
+                        <div class="bg-gold/20 p-3 rounded-2xl text-center">
+                            19:00 - 21:00 WIB
                         </div>
                     </div>
                 </div>
@@ -216,54 +201,48 @@
         </div>
     </section>
 
-    <section id="location" class="py-32 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-20" data-aos="fade-up">
-                <h2 class="text-5xl font-display font-bold text-maroon uppercase">Official Dojo</h2>
-                <p class="text-gray-500 mt-4 italic font-light">Kunjungi kami di pusat kota Cimahi</p>
-            </div>
-            
-            <div class="max-w-6xl mx-auto map-container" data-aos="zoom-in">
+    <section id="location" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl font-display font-bold text-maroon uppercase mb-12 tracking-widest">Lokasi Dojo</h2>
+            <div class="max-w-5xl mx-auto map-container shadow-2xl relative">
                 <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.0855219213813!2d107.5407001!3d-6.8803517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e458d8e23515%3A0x2778a76fa377a757!2sCimahi%20Mall!5e0!3m2!1sen!2sid!4v1705600000000!5m2!1sen!2sid" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.050518776092!2d107.54086657475654!3d-6.884542293114457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e45f98a35961%3A0x2779a767e377a757!2sCimahi%20Mall!5e0!3m2!1sid!2sid!4v1709280000000!5m2!1sid!2sid" 
                     allowfullscreen="" loading="lazy">
                 </iframe>
             </div>
         </div>
     </section>
 
-    <footer class="bg-black text-white py-24 text-center border-t-8 border-gold">
+    <footer class="bg-black text-white py-16 text-center border-t-4 border-gold">
         <div class="container mx-auto px-6">
-            <img src="logo-csa.png" alt="CSA" class="h-20 mx-auto mb-8 bg-white rounded-full p-1.5 shadow-2xl ring-2 ring-gold">
-            <p class="font-display text-gold text-4xl font-bold italic uppercase tracking-widest mb-10">Champion Sport Academy</p>
-            
-            <div class="flex justify-center gap-10 text-3xl text-gold mb-16">
-                <a href="https://wa.me/6289655445151" target="_blank" class="hover:text-white transition transform hover:scale-125"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://instagram.com/opik0027" target="_blank" class="hover:text-white transition transform hover:scale-125"><i class="fab fa-instagram"></i></a>
+            <div class="flex flex-col items-center mb-8">
+                <img src="logo-csa.png" alt="CSA" class="h-16 w-16 bg-white rounded-full p-1 mb-4 shadow-lg border border-gold">
+                <p class="font-display text-gold text-2xl italic uppercase tracking-[0.2em] font-bold">Champion Sport Academy</p>
             </div>
-            
-            <p class="text-[9px] text-gray-600 tracking-[0.5em] uppercase font-bold">
-                © 2026 Champion Sport Academy. Powered by Performance Integrated System.
-            </p>
+            <div class="flex justify-center gap-10 text-3xl text-gold mb-12">
+                <a href="https://wa.me/6289655445151" target="_blank" class="hover:text-white smooth-transition"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://instagram.com/opik0027" target="_blank" class="hover:text-white smooth-transition"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="text-[9px] text-gray-600 tracking-[0.5em] uppercase">© 2026 Champion Sport Academy. All Rights Reserved.</p>
         </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1200, once: true });
+        AOS.init({ duration: 1000, once: true });
+        
+        // Mobile Menu Script
+        const navBtn = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelectorAll('.mobile-link');
 
-        // Navigasi Mobile
-        const btn = document.getElementById('mobile-toggle');
-        const menu = document.getElementById('mobile-menu');
-        const links = document.querySelectorAll('.mobile-link');
-
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
+        navBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('hidden');
         });
 
-        links.forEach(link => {
+        navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                menu.classList.add('hidden');
+                navMenu.classList.add('hidden');
             });
         });
     </script>
