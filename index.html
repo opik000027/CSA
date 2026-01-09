@@ -37,8 +37,8 @@
             <div class="flex items-center gap-3">
                 <img src="logo-csa.png" alt="Logo CSA" class="h-10 md:h-12 w-10 md:w-12 border border-gold rounded-full bg-white shadow-lg object-contain p-0.5">
                 <div class="flex flex-col">
-                    <span class="text-lg font-display font-bold text-gold leading-none">CHAMPION</span>
-                    <span class="text-[10px] tracking-[0.2em] italic">SPORT ACADEMY</span>
+                    <span class="text-lg font-display font-bold text-gold leading-none uppercase">CHAMPION</span>
+                    <span class="text-[10px] tracking-[0.2em] italic uppercase text-gray-300">Sport Academy</span>
                 </div>
             </div>
 
@@ -56,7 +56,7 @@
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-maroon border-t border-gold/20 mt-4 p-4 flex flex-col space-y-4 text-sm font-semibold text-center uppercase tracking-widest">
+        <div id="mobile-menu" class="hidden md:hidden bg-maroon border-t border-gold/20 mt-4 p-4 flex flex-col space-y-4 text-sm font-semibold text-center uppercase tracking-widest shadow-2xl">
             <a href="#home" class="mobile-link py-2 border-b border-gold/10">Home</a>
             <a href="#programs" class="mobile-link py-2 border-b border-gold/10">Program</a>
             <a href="#coach" class="mobile-link py-2 border-b border-gold/10">Pelatih</a>
@@ -65,13 +65,6 @@
             <a href="https://tally.so/r/yPNQRB" target="_blank" class="gold-gradient text-maroon py-3 rounded-xl uppercase font-bold">Daftar Trial</a>
         </div>
     </nav>
-
-    <a href="https://wa.me/6289655445151" target="_blank" class="floating-wa group">
-        <span class="bg-white text-gray-800 px-4 py-2 rounded-full shadow-xl text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-gold">Tanya Jadwal?</span>
-        <div class="bg-[#25D366] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
-            <i class="fab fa-whatsapp text-3xl"></i>
-        </div>
-    </a>
 
     <section id="home" class="relative min-h-screen flex items-center justify-center text-center text-white">
         <div class="absolute inset-0 bg-cover bg-center bg-fixed" style="background-image: url('bg-latihan.jpg');">
@@ -99,9 +92,9 @@
 
         <div class="grid md:grid-cols-2 gap-12">
             <div class="group relative bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 transition hover:-translate-y-2" data-aos="fade-right">
-                <div class="h-72 overflow-hidden relative">
-                    <img src="fas fa-fist-raised text-gold text-2xl" alt="Karate" class="w-full h-full object-cover group-hover:scale-110 smooth-transition">
-                    <div class="absolute top-4 left-4 bg-maroon text-gold text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Olympic Sport</div>
+                <div class="h-64 bg-maroon flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[url('karate.jpg')] bg-cover bg-center"></div>
+                    <i class="fas fa-fist-raised text-7xl text-gold group-hover:scale-110 smooth-transition relative z-10"></i>
                 </div>
                 <div class="p-8 text-center">
                     <h3 class="text-3xl font-display font-bold text-maroon uppercase mb-4 tracking-tight">Karate Team</h3>
@@ -111,9 +104,9 @@
             </div>
 
             <div class="group relative bg-white rounded-3xl overflow-hidden shadow-2xl border border-gray-100 transition hover:-translate-y-2" data-aos="fade-left">
-                <div class="h-72 overflow-hidden relative">
-                    <img src="fas fa-fist-raised text-gold text-2xl" alt="Hapkido" class="w-full h-full object-cover group-hover:scale-110 smooth-transition">
-                    <div class="absolute top-4 left-4 bg-gold text-maroon text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Self Defense</div>
+                <div class="h-64 bg-gold flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 opacity-10 bg-[url('hapkido.jpg')] bg-cover bg-center"></div>
+                    <i class="fas fa-shield-alt text-7xl text-maroon group-hover:scale-110 smooth-transition relative z-10"></i>
                 </div>
                 <div class="p-8 text-center">
                     <h3 class="text-3xl font-display font-bold text-maroon uppercase mb-4 tracking-tight">Hapkido Self-Defense</h3>
@@ -128,11 +121,11 @@
         <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
             <div class="relative group" data-aos="fade-right">
                 <div class="absolute -inset-2 gold-gradient rounded-2xl blur opacity-20 group-hover:opacity-40 transition"></div>
-                <img src="senpai-opik.jpg" alt="Senpai Opik" class="relative w-72 h-72 md:w-96 md:h-96 rounded-2xl border-2 border-gold/50 object-cover shadow-2xl grayscale hover:grayscale-0 transition duration-700">
+                <img src="senpai-opik.png" alt="Senpai Opik" class="relative w-72 h-72 md:w-96 md:h-96 rounded-2xl border-2 border-gold/50 object-cover shadow-2xl grayscale hover:grayscale-0 transition duration-700">
             </div>
             <div data-aos="fade-left" class="max-w-xl text-center md:text-left">
                 <h2 class="text-gold font-display text-5xl font-bold mb-2 uppercase tracking-tight">Senpai Opik</h2>
-                <p class="text-gray-400 tracking-[0.3em] mb-8 font-bold uppercase italic text-sm">DAN III Karate</p>
+                <p class="text-gray-400 tracking-[0.3em] mb-8 font-bold uppercase italic text-sm">Karate DAN III</p>
                 <div class="bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 relative">
                     <i class="fas fa-quote-left text-3xl text-gold/20 absolute top-4 left-4"></i>
                     <p class="text-xl italic leading-relaxed text-gray-200 font-light mb-6">
@@ -151,14 +144,11 @@
                 <div class="w-20 h-1 bg-gold mx-auto mt-4"></div>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-8 text-center md:text-left">
                 <div class="p-8 bg-maroon rounded-[2.5rem] shadow-xl text-white border-b-8 border-gold" data-aos="fade-up">
-                    <div class="bg-gold/10 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-fist-raised text-gold text-2xl"></i>
-                    </div>
-                    <h4 class="text-gold font-bold mb-1 uppercase tracking-widest text-xs">Karate (Cimahi Mall)</h4>
+                    <h4 class="text-gold font-bold mb-1 uppercase tracking-widest text-[11px]">Karate (Cimahi Mall)</h4>
                     <p class="text-[10px] text-gray-400 mb-6 italic uppercase">lt2 Exhibition Hall</p>
-                    <div class="space-y-3 font-semibold">
+                    <div class="space-y-3 font-semibold text-sm">
                         <div class="flex justify-between border-b border-white/10 pb-2">
                             <span>Selasa</span>
                             <span class="text-gold">17:00 - 19:00</span>
@@ -171,13 +161,10 @@
                 </div>
 
                 <div class="p-8 bg-gray-50 rounded-[2.5rem] shadow-xl border border-gray-100" data-aos="fade-up" data-aos-delay="100">
-                    <div class="bg-maroon/5 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-tree text-maroon text-2xl"></i>
-                    </div>
-                    <h4 class="text-maroon font-bold mb-1 uppercase tracking-widest text-xs">Karate (KBP)</h4>
+                    <h4 class="text-maroon font-bold mb-1 uppercase tracking-widest text-[11px]">Karate (KBP)</h4>
                     <p class="text-[10px] text-gray-400 mb-6 italic uppercase">Lapang Wangsakerta</p>
                     <div class="space-y-3 font-bold">
-                        <div class="flex justify-between text-maroon">
+                        <div class="flex justify-between text-maroon text-sm">
                             <span>Minggu</span>
                             <span class="bg-maroon text-white px-3 py-1 rounded-lg text-xs">07:00 - 09:00</span>
                         </div>
@@ -185,14 +172,11 @@
                 </div>
 
                 <div class="p-8 bg-gray-50 rounded-[2.5rem] shadow-xl border border-gray-100" data-aos="fade-up" data-aos-delay="200">
-                    <div class="bg-maroon/5 w-12 h-12 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-hand-holding-heart text-maroon text-2xl"></i>
-                    </div>
-                    <h4 class="text-maroon font-bold mb-1 uppercase tracking-widest text-xs">Hapkido (Cimahi Mall)</h4>
+                    <h4 class="text-maroon font-bold mb-1 uppercase tracking-widest text-[11px]">Hapkido (Cimahi Mall)</h4>
                     <p class="text-[10px] text-gray-400 mb-6 italic uppercase">lt2 Exhibition Hall</p>
-                    <div class="space-y-3 font-bold text-sm text-maroon">
-                        <p class="mb-1 uppercase text-[10px] text-gray-400">Selasa, Rabu, Jumat</p>
-                        <div class="bg-gold/20 p-3 rounded-2xl text-center">
+                    <div class="space-y-4 font-bold text-maroon">
+                        <p class="mb-1 uppercase text-[10px] text-gray-400 italic">Selasa, Rabu, Jumat</p>
+                        <div class="bg-gold/20 p-3 rounded-2xl text-center text-sm">
                             19:00 - 21:00 WIB
                         </div>
                     </div>
@@ -206,7 +190,7 @@
             <h2 class="text-4xl font-display font-bold text-maroon uppercase mb-12 tracking-widest">Lokasi Dojo</h2>
             <div class="max-w-5xl mx-auto map-container shadow-2xl relative">
                 <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.050518776092!2d107.54086657475654!3d-6.884542293114457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e45f98a35961%3A0x2779a767e377a757!2sCimahi%20Mall!5e0!3m2!1sid!2sid!4v1709280000000!5m2!1sid!2sid" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.05037145749!2d107.5401183147727!3d-6.884542995025178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e458d8c25795%3A0xcb79a76fe377a757!2sCimahi%20Mall!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
                     allowfullscreen="" loading="lazy">
                 </iframe>
             </div>
@@ -214,12 +198,10 @@
     </section>
 
     <footer class="bg-black text-white py-16 text-center border-t-4 border-gold">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col items-center mb-8">
-                <img src="logo-csa.png" alt="CSA" class="h-16 w-16 bg-white rounded-full p-1 mb-4 shadow-lg border border-gold">
-                <p class="font-display text-gold text-2xl italic uppercase tracking-[0.2em] font-bold">Champion Sport Academy</p>
-            </div>
-            <div class="flex justify-center gap-10 text-3xl text-gold mb-12">
+        <div class="container mx-auto px-6 text-center items-center flex flex-col">
+            <img src="logo-csa.png" alt="CSA" class="h-16 w-16 bg-white rounded-full p-1 mb-4 shadow-lg border border-gold">
+            <p class="font-display text-gold text-2xl italic uppercase tracking-[0.2em] font-bold">Champion Sport Academy</p>
+            <div class="flex justify-center gap-10 text-3xl text-gold mt-10 mb-10">
                 <a href="https://wa.me/6289655445151" target="_blank" class="hover:text-white smooth-transition"><i class="fab fa-whatsapp"></i></a>
                 <a href="https://instagram.com/opik0027" target="_blank" class="hover:text-white smooth-transition"><i class="fab fa-instagram"></i></a>
             </div>
@@ -231,7 +213,6 @@
     <script>
         AOS.init({ duration: 1000, once: true });
         
-        // Mobile Menu Script
         const navBtn = document.getElementById('mobile-toggle');
         const navMenu = document.getElementById('mobile-menu');
         const navLinks = document.querySelectorAll('.mobile-link');
