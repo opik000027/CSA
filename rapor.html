@@ -1,397 +1,333 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rapor Atlet - Champion Sport Academy</title>
-
+    
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/opik000027/CSA/main/img/logo.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap");
-
-      body {
-        font-family: "Roboto", sans-serif;
-        background-color: #f8fafc;
-      }
-      .font-sport {
-        font-family: "Oswald", sans-serif;
-      }
-
-      /* Tema Warna Champion (Maroon & Gold) */
-      .bg-champion {
-        background-color: #7f1d1d;
-      }
-      .text-champion {
-        color: #7f1d1d;
-      }
-      .text-gold {
-        color: #fbbf24;
-      }
-      .bg-gold {
-        background-color: #fbbf24;
-      }
-      .border-gold {
-        border-color: #fbbf24;
-      }
-
-      .fade-in {
-        animation: fadeIn 0.5s ease-in-out;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap');
+        
+        body { font-family: 'Roboto', sans-serif; background-color: #f8fafc; }
+        .font-sport { font-family: 'Oswald', sans-serif; }
+        
+        /* Warna Champion CSA */
+        .bg-champion { background-color: #991b1b; } 
+        .text-champion { color: #991b1b; }
+        .text-gold { color: #fbbf24; }
+        
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
-  </head>
-  <body class="min-h-screen flex flex-col">
-    <nav class="bg-champion text-white shadow-lg sticky top-0 z-50 border-b-4 border-gold">
-      <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-trophy text-gold text-2xl"></i>
-          <div class="leading-tight">
-            <div class="font-sport text-lg tracking-wide uppercase font-bold">Champion Sport Academy</div>
-            <div class="text-[10px] opacity-80 font-light uppercase tracking-widest text-gold">Athlete Performance System</div>
-          </div>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="bg-champion text-white shadow-lg sticky top-0 z-50 border-b-2 border-yellow-500">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <img src="https://raw.githubusercontent.com/opik000027/CSA/main/img/logo.png" alt="Logo" class="w-8 h-8">
+                <div class="font-sport text-lg tracking-wide uppercase font-bold">CSA System</div>
+            </div>
+
+            <button id="nav-toggle" class="md:hidden text-white focus:outline-none">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+
+            <div class="hidden md:flex items-center gap-6 font-medium">
+                <a href="index.html" class="hover:text-yellow-400 transition">Beranda</a>
+                <a href="rapor.html" class="text-yellow-400 font-bold underline decoration-2 underline-offset-8">Rapor Atlet</a>
+            </div>
         </div>
-        <div class="flex gap-2">
-          <a href="index.html" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded transition flex items-center"> <i class="fa-solid fa-house mr-1"></i> Beranda </a>
-          <button onclick="location.reload()" class="text-xs bg-gold text-red-900 font-bold px-3 py-1 rounded hover:bg-yellow-500 transition"><i class="fa-solid fa-rotate-left mr-1"></i> Ganti Atlet</button>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-red-950 border-t border-red-800 p-4 space-y-3">
+            <a href="index.html" class="block hover:text-yellow-400 py-2 border-b border-red-900">Beranda</a>
+            <a href="rapor.html" class="block text-yellow-400 py-2 font-bold">Rapor Atlet</a>
         </div>
-      </div>
     </nav>
 
     <div id="loading" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-900 mb-4"></div>
-      <p class="text-gray-500 text-sm font-bold animate-pulse">Sinkronisasi Data Google Sheets...</p>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-800 mb-4"></div>
+        <p class="text-gray-500 text-sm font-bold">Sinkronisasi Data...</p>
     </div>
 
     <div id="section-selector" class="flex-grow flex items-center justify-center p-4 fade-in hidden">
-      <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full border-t-8 border-champion relative overflow-hidden">
-        <div class="absolute -right-10 -top-10 opacity-5">
-          <i class="fa-solid fa-award text-9xl"></i>
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full border-t-8 border-champion">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-sport text-gray-800 uppercase tracking-tight">Cari Data Atlet</h2>
+                <p class="text-xs text-gray-400 uppercase font-bold mt-1">Pilih wilayah pendaftaran</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <select id="selectPengcab" onchange="loadAtlet()" class="w-full border-2 border-gray-100 rounded-xl p-4 focus:border-red-800 outline-none transition bg-gray-50 font-medium">
+                        <option value="">-- Pilih Wilayah --</option>
+                        <option value="Cimahi">Kota Cimahi</option>
+                        <option value="KabBandung">Kab. Bandung</option>
+                        <option value="KBB">Kab. Bandung Barat</option>
+                    </select>
+                </div>
+
+                <div id="divSelectNama" class="opacity-30 pointer-events-none transition-opacity duration-300">
+                    <select id="selectNama" class="w-full border-2 border-gray-100 rounded-xl p-4 focus:border-red-800 outline-none transition bg-gray-50 font-medium text-gray-700">
+                        <option value="">-- Pilih Nama Atlet --</option>
+                    </select>
+                </div>
+
+                <button onclick="showReport()" id="btnLihat" class="w-full bg-gray-200 text-gray-400 font-bold py-4 rounded-xl transition duration-300 pointer-events-none uppercase tracking-widest shadow-lg">
+                    Lihat Performa <i class="fa-solid fa-bolt ml-2"></i>
+                </button>
+            </div>
         </div>
-
-        <h2 class="text-2xl font-sport text-gray-800 text-center mb-6 uppercase tracking-tight">Cari Rapor Atlet</h2>
-
-        <div class="mb-4">
-          <label class="block text-xs font-bold text-gray-400 uppercase mb-1 ml-1">Pilih Pengcab / Wilayah</label>
-          <select id="selectPengcab" onchange="loadAtlet()" class="w-full border-2 border-gray-100 bg-gray-50 rounded-xl p-3 focus:outline-none focus:border-red-800 font-medium transition-all">
-            <option value="">-- Pilih Wilayah --</option>
-            <option value="Cimahi">Kota Cimahi</option>
-            <option value="KabBandung">Kab. Bandung</option>
-            <option value="KBB">Kab. Bandung Barat</option>
-          </select>
-        </div>
-
-        <div class="mb-6 opacity-30 pointer-events-none transition-all duration-500" id="divSelectNama">
-          <label class="block text-xs font-bold text-gray-400 uppercase mb-1 ml-1">Nama Lengkap Atlet</label>
-          <select id="selectNama" class="w-full border-2 border-gray-100 bg-gray-50 rounded-xl p-3 focus:outline-none focus:border-red-800 font-medium shadow-inner">
-            <option value="">-- Pilih Nama --</option>
-          </select>
-        </div>
-
-        <button onclick="showReport()" id="btnLihat" class="w-full bg-gray-200 text-gray-400 font-bold py-4 rounded-xl cursor-not-allowed transition duration-500 pointer-events-none flex justify-center items-center">
-          LIHAT PERFORMA <i class="fa-solid fa-chevron-right ml-2 text-xs"></i>
-        </button>
-
-        <p class="text-[10px] text-center text-gray-400 mt-6 uppercase tracking-widest font-bold">Champion Sport Academy &copy; 2026</p>
-      </div>
     </div>
 
     <div id="section-report" class="hidden container mx-auto px-4 py-6 max-w-5xl fade-in">
-      <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-6 relative border border-gray-100">
-        <div class="h-2 bg-gold w-full"></div>
-        <div class="md:flex items-center p-8 gap-8">
-          <div class="flex-shrink-0 mx-auto md:mx-0">
-            <div class="relative">
-              <img id="imgAtlet" src="" class="w-28 h-28 rounded-2xl border-4 border-white shadow-2xl object-cover" />
-              <div class="absolute -bottom-2 -right-2 bg-champion text-gold rounded-lg p-1 text-xs border-2 border-white shadow-lg">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
+        <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-6 relative border border-gray-100">
+            <div class="absolute top-0 right-0 bg-yellow-400 text-red-950 text-[10px] font-black px-4 py-1 rounded-bl-xl uppercase tracking-widest">Januari 2026</div>
+            <div class="md:flex items-center p-8 gap-8">
+                <div class="flex-shrink-0 mx-auto md:mx-0">
+                    <img id="imgAtlet" src="" class="w-28 h-28 rounded-2xl border-4 border-white shadow-xl object-cover ring-2 ring-gray-50">
+                </div>
+                <div class="text-center md:text-left flex-grow">
+                    <h1 id="txtNama" class="text-3xl font-sport font-bold text-gray-800 uppercase leading-none">NAMA ATLET</h1>
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-3">
+                        <span id="txtCabor" class="bg-red-50 text-red-800 px-3 py-1 rounded-full text-xs font-black uppercase">CABOR</span>
+                        <span id="txtWilayah" class="text-gray-400 text-xs font-bold uppercase"><i class="fa-solid fa-location-dot mr-1"></i> Wilayah</span>
+                    </div>
+                </div>
+                <div class="mt-6 md:mt-0 text-center bg-gray-50 p-4 rounded-2xl border border-gray-100 min-w-[120px]">
+                    <div class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">Skor Akhir</div>
+                    <div id="txtTotalSkor" class="text-5xl font-sport font-bold text-champion leading-none">00</div>
+                    <div id="txtPredikat" class="text-[10px] font-black uppercase mt-2 inline-block px-2 py-1 rounded">STATUS</div>
+                </div>
             </div>
-          </div>
-          <div class="text-center md:text-left flex-grow mt-4 md:mt-0">
-            <h1 id="txtNama" class="text-3xl md:text-4xl font-sport font-bold text-gray-800 uppercase leading-none">NAMA ATLET</h1>
-            <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-3">
-              <span id="txtCabor" class="bg-red-50 text-champion border border-red-100 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">CABOR</span>
-              <span class="text-gray-300">|</span>
-              <span id="txtWilayah" class="text-sm text-gray-500 font-medium">Wilayah Satuan</span>
-            </div>
-          </div>
-          <div class="mt-6 md:mt-0 flex gap-4 justify-center">
-            <div class="text-center border-r pr-4 border-gray-100">
-              <div class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Total Skor</div>
-              <div id="txtTotalSkor" class="text-4xl font-sport font-bold text-champion">00</div>
-            </div>
-            <div class="text-center">
-              <div class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Predikat Fisik</div>
-              <div id="txtPredikat" class="text-sm font-bold text-white bg-champion px-3 py-1 rounded-lg mt-1 inline-block uppercase">STATUS</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-12 gap-6">
-        <div class="md:col-span-7 space-y-6">
-          <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100">
-            <h3 class="font-sport text-xl text-gray-800 border-b-2 border-gray-50 pb-3 mb-6 flex justify-between items-center">
-              <span class="flex items-center"><i class="fa-solid fa-chart-line mr-2 text-champion"></i> PETA KEMAMPUAN ATLET</span>
-              <span class="text-[10px] text-gray-300 uppercase tracking-widest font-bold">Sport Science Data</span>
-            </h3>
-            <div class="relative w-full h-80">
-              <canvas id="radarChart"></canvas>
-            </div>
-          </div>
-
-          <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100 flex items-center justify-between">
-            <div>
-              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Kedisiplinan Hadir</div>
-              <div class="text-3xl font-bold text-gray-800"><span id="txtAbsen">0</span>%</div>
-            </div>
-            <div class="w-2/3">
-              <div class="flex justify-between text-[10px] font-bold text-gray-400 mb-1">
-                <span>KEHADIRAN BULAN INI</span>
-                <span id="txtAbsenLabel">0/8 Sesi</span>
-              </div>
-              <div class="w-full bg-gray-100 rounded-full h-4 overflow-hidden shadow-inner p-1">
-                <div id="barAbsen" class="bg-champion h-full rounded-full transition-all duration-1000 shadow-lg" style="width: 0%"></div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        <div class="md:col-span-5">
-          <div class="bg-white p-6 rounded-3xl shadow-xl border border-gray-100 h-full flex flex-col">
-            <h3 class="font-sport text-xl text-gray-800 border-b-2 border-gray-50 pb-3 mb-6 flex justify-between items-center">
-              <span>DETAIL INDIKATOR</span>
-              <i class="fa-solid fa-list-check text-gray-200"></i>
-            </h3>
+        <div class="grid md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-6">
+                <div class="bg-white p-6 rounded-3xl shadow-lg border border-gray-50">
+                    <h3 class="font-sport text-xl text-gray-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-red-600"></i> Analisis Kemampuan
+                    </h3>
+                    <div class="relative w-full h-80">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
 
-            <div class="space-y-4 flex-grow" id="tableContainer"></div>
-
-            <div class="mt-8 bg-champion/5 border-l-4 border-champion p-5 rounded-r-2xl">
-              <div class="flex items-center gap-2 mb-2">
-                <i class="fa-solid fa-comment-dots text-champion"></i>
-                <div class="text-xs font-bold text-champion uppercase tracking-widest">Saran Pelatih</div>
-              </div>
-              <p id="txtCatatan" class="text-sm text-gray-700 italic leading-relaxed">"..."</p>
+                <div class="bg-white p-6 rounded-3xl shadow-lg border border-gray-50 flex items-center justify-between">
+                    <div>
+                        <div class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">Tingkat Kehadiran</div>
+                        <div class="text-2xl font-bold text-gray-800"><span id="txtAbsen">0</span>%</div>
+                        <div class="text-xs text-gray-500 font-medium mt-1">
+                            <i class="fa-solid fa-calendar-check text-green-500 mr-1"></i> 
+                            <span id="txtDetailAbsen">0 dari 0</span> Latihan
+                        </div>
+                    </div>
+                    <div class="w-1/2 bg-gray-100 rounded-full h-4 p-1 shadow-inner">
+                        <div id="barAbsen" class="bg-gradient-to-r from-red-600 to-red-800 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="text-center mt-12 pb-12">
-        <div class="inline-flex items-center gap-3 bg-white px-6 py-2 rounded-full shadow-sm border border-gray-50">
-          <i class="fa-solid fa-trophy text-gold"></i>
-          <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest italic">Train Hard, Fight Smart - Champion Sport Academy</span>
+            <div class="md:col-span-5">
+                <div class="bg-white p-6 rounded-3xl shadow-lg border border-gray-50 h-full">
+                    <h3 class="font-sport text-xl text-gray-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-red-600"></i> Rincian Fisik
+                    </h3>
+                    <div class="space-y-4" id="tableContainer"></div>
+                    
+                    <div class="mt-8 bg-yellow-50 border-2 border-yellow-100 p-5 rounded-2xl">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-comment-dots text-yellow-600"></i>
+                            <span class="text-[10px] font-black text-yellow-700 uppercase tracking-widest">Catatan Pelatih</span>
+                        </div>
+                        <p id="txtCatatan" class="text-sm text-yellow-900 leading-relaxed italic">"..."</p>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
+    <footer class="text-center py-10 text-gray-400 text-[10px] uppercase font-bold tracking-[0.2em]">
+        &copy; 2026 Champion Sport Academy System
+    </footer>
+
     <script>
-      // === KONFIGURASI LINK GOOGLE SHEET (CSV) ===
-      const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAg9NhPDYcmxERNMMc0xPAyl71vyQDqu17yXbPlAyJmcNdBd5xHrE8NYSaT-PcPeNksGYdV9lb97hC/pub?gid=1540868773&single=true&output=csv";
+        // --- CONFIG ---
+        const SHEET_URL = 'GANTI_DENGAN_LINK_CSV_ANDA'; 
+        const CACHE_TIME = 30 * 60 * 1000; // 30 Menit Cache
 
-      let dbData = {};
-      const labelsTes = ["Push Up", "Sit Up", "Power", "Agility", "VO2Max", "Flexibility"];
-      let chartInstance = null;
+        let dbData = {}; 
+        let chartInstance = null;
+        const labelsTes = ['Push Up', 'Sit Up', 'Power', 'Agility', 'VO2Max', 'Flexibility'];
 
-      window.onload = function () {
-        Papa.parse(SHEET_URL, {
-          download: true,
-          header: true,
-          skipEmptyLines: true,
-          complete: function (results) {
-            processData(results.data);
-            document.getElementById("loading").style.display = "none";
-            document.getElementById("section-selector").classList.remove("hidden");
-          },
-          error: function (err) {
-            alert("Gagal sinkronisasi data. Pastikan koneksi internet aktif dan link spreadsheet benar.");
-            document.getElementById("loading").style.display = "none";
-          },
-        });
-      };
+        // Navigasi Toggle
+        const navToggle = document.getElementById('nav-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        navToggle.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
-      function processData(rows) {
-        dbData = { Cimahi: [], KabBandung: [], KBB: [] };
+        window.onload = function() {
+            const cached = localStorage.getItem('csa_cache_data');
+            const ts = localStorage.getItem('csa_cache_ts');
+            const now = new Date().getTime();
 
-        rows.forEach((row) => {
-          // Mapping kolom dengan nama spesifik
-          const nama = row["NAMA LENGKAP"];
-          const wilayah = row["WILAYAH"];
-          const cabor = row["PROGRAM YANG DIPILIH"];
-          const foto = row["FOTO TERBAIK"];
-
-          if (!nama || !wilayah) return;
-
-          let wilKey = "";
-          let rawWil = wilayah.toLowerCase().replace(/[\s\.]/g, "");
-
-          if (rawWil.includes("cimahi")) wilKey = "Cimahi";
-          else if (rawWil.includes("kabb") || rawWil.includes("bandungbarat")) wilKey = "KBB";
-          else if (rawWil.includes("bandung")) wilKey = "KabBandung";
-
-          if (wilKey) {
-            dbData[wilKey].push({
-              nama: nama,
-              cabor: cabor || "Bela Diri",
-              foto: foto && foto.length > 10 ? foto : `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=7f1d1d&color=fff`,
-              nilai: [parseInt(row.PUSHUP_NILAI) || 0, parseInt(row.SITUP_NILAI) || 0, parseInt(row.POWER_NILAI) || 0, parseInt(row.AGILITY_NILAI) || 0, parseInt(row.VO2_NILAI) || 0, parseInt(row.FLEX_NILAI) || 0],
-              detail: [row.PUSHUP_HASIL || "0", row.SITUP_HASIL || "0", row.POWER_HASIL || "0", row.AGILITY_HASIL || "0", row.VO2_HASIL || "0", row.FLEX_HASIL || "0"],
-              totalSkor: parseInt(row.TOTAL_SKOR) || 0,
-              predikat: row.PREDIKAT || "Belum Tes",
-              absensi: parseInt(row.ABSENSI) || 0,
-              catatan: row.CATATAN || "Teruslah berlatih dengan disiplin untuk mencapai performa puncak di kompetisi mendatang.",
-            });
-          }
-        });
-      }
-
-      function loadAtlet() {
-        const wil = document.getElementById("selectPengcab").value;
-        const selectNama = document.getElementById("selectNama");
-        const divNama = document.getElementById("divSelectNama");
-        const btn = document.getElementById("btnLihat");
-
-        selectNama.innerHTML = '<option value="">-- Pilih Nama Atlet --</option>';
-
-        if (wil && dbData[wil] && dbData[wil].length > 0) {
-          divNama.classList.remove("opacity-30", "pointer-events-none");
-          dbData[wil].forEach((atlet, index) => {
-            const opt = document.createElement("option");
-            opt.value = index;
-            opt.innerHTML = atlet.nama;
-            selectNama.appendChild(opt);
-          });
-
-          selectNama.onchange = function () {
-            if (this.value !== "") {
-              btn.classList.remove("bg-gray-200", "text-gray-400", "cursor-not-allowed", "pointer-events-none");
-              btn.classList.add("bg-champion", "text-white", "hover:bg-red-800", "shadow-xl", "scale-105");
+            if (cached && ts && (now - ts < CACHE_TIME)) {
+                console.log("Using Cached Data");
+                dbData = JSON.parse(cached);
+                finishLoading();
             } else {
-              btn.classList.add("bg-gray-200", "text-gray-400", "cursor-not-allowed", "pointer-events-none");
-              btn.classList.remove("bg-champion", "text-white", "hover:bg-red-800", "shadow-xl", "scale-105");
+                fetchData();
             }
-          };
-        } else {
-          divNama.classList.add("opacity-30", "pointer-events-none");
-          btn.classList.add("bg-gray-200", "text-gray-400", "cursor-not-allowed", "pointer-events-none");
-          btn.classList.remove("bg-champion", "text-white");
+        };
+
+        function fetchData() {
+            Papa.parse(SHEET_URL, {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    processData(results.data);
+                    localStorage.setItem('csa_cache_data', JSON.stringify(dbData));
+                    localStorage.setItem('csa_cache_ts', new Date().getTime());
+                    finishLoading();
+                }
+            });
         }
-      }
 
-      function showReport() {
-        const wil = document.getElementById("selectPengcab").value;
-        const idx = document.getElementById("selectNama").value;
-        if (wil === "" || idx === "") return;
+        function processData(rows) {
+            dbData = { "Cimahi": [], "KabBandung": [], "KBB": [] };
+            rows.forEach(row => {
+                const name = row['NAMA LENGKAP'];
+                const wil = row['WILAYAH'] ? row['WILAYAH'].toLowerCase().replace(/[\s\.]/g, '') : "";
+                if(!name || !wil) return;
 
-        const atlet = dbData[wil][idx];
+                let key = "";
+                if(wil.includes("cimahi")) key = "Cimahi";
+                else if(wil.includes("kabb") || wil.includes("bandungbarat")) key = "KBB";
+                else if(wil.includes("bandung")) key = "KabBandung";
 
-        document.getElementById("imgAtlet").src = atlet.foto;
-        document.getElementById("txtNama").innerText = atlet.nama;
-        document.getElementById("txtCabor").innerText = atlet.cabor;
-        document.getElementById("txtWilayah").innerText = wil === "KabBandung" ? "Kab. Bandung" : wil === "KBB" ? "Bandung Barat" : "Kota Cimahi";
-        document.getElementById("txtTotalSkor").innerText = atlet.totalSkor;
-        document.getElementById("txtPredikat").innerText = atlet.predikat;
-        document.getElementById("txtAbsen").innerText = atlet.absensi;
-        document.getElementById("barAbsen").style.width = atlet.absensi + "%";
-        document.getElementById("txtCatatan").innerText = `"${atlet.catatan}"`;
+                if(key) {
+                    dbData[key].push({
+                        nama: name,
+                        cabor: row['PROGRAM YANG DIPILIH'] || "-",
+                        foto: (row['FOTO TERBAIK'] && row['FOTO TERBAIK'].length > 10) ? row['FOTO TERBAIK'] : "https://ui-avatars.com/api/?name="+name+"&background=991b1b&color=fff",
+                        nilai: [parseInt(row.PUSHUP_NILAI)||0, parseInt(row.SITUP_NILAI)||0, parseInt(row.POWER_NILAI)||0, parseInt(row.AGILITY_NILAI)||0, parseInt(row.VO2_NILAI)||0, parseInt(row.FLEX_NILAI)||0],
+                        detail: [row.PUSHUP_HASIL||"-", row.SITUP_HASIL||"-", row.POWER_HASIL||"-", row.AGILITY_HASIL||"-", row.VO2_HASIL||"-", row.FLEX_HASIL||"-"],
+                        totalSkor: row.TOTAL_SKOR || 0,
+                        predikat: row.PREDIKAT || "BELUM TES",
+                        absensi: row.ABSENSI || 0,
+                        hadir: row.HADIR || 0,
+                        totalSesi: row.TOTAL_SESI || 0,
+                        catatan: row.CATATAN || "Terus berikan yang terbaik di setiap sesi latihan!"
+                    });
+                }
+            });
+        }
 
-        // Render Detail Table
-        const tbl = document.getElementById("tableContainer");
-        tbl.innerHTML = "";
-        labelsTes.forEach((label, i) => {
-          const nilai = atlet.nilai[i];
-          const hasilAsli = atlet.detail[i];
-          let colorClass = "bg-red-500";
-          if (nilai >= 5) colorClass = "bg-blue-600";
-          else if (nilai >= 4) colorClass = "bg-green-500";
-          else if (nilai >= 3) colorClass = "bg-yellow-500";
+        function finishLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('section-selector').classList.remove('hidden');
+        }
 
-          const htmlItem = `
-                <div class="flex items-center justify-between text-sm border-b border-gray-50 pb-3 last:border-0">
-                    <div class="w-1/3 font-bold text-gray-700">${label}</div>
-                    <div class="w-1/3 text-center font-bold text-gray-400">${hasilAsli}</div>
-                    <div class="w-1/3 flex items-center gap-2 justify-end">
-                        <div class="w-16 bg-gray-100 rounded-full h-1.5 overflow-hidden">
-                            <div class="${colorClass} h-full rounded-full" style="width: ${nilai * 20}%"></div>
+        function loadAtlet() {
+            const wil = document.getElementById('selectPengcab').value;
+            const selectNama = document.getElementById('selectNama');
+            const divNama = document.getElementById('divSelectNama');
+            const btn = document.getElementById('btnLihat');
+            
+            selectNama.innerHTML = '<option value="">-- Pilih Nama Atlet --</option>';
+            if (wil && dbData[wil]) {
+                divNama.classList.remove('opacity-30', 'pointer-events-none');
+                dbData[wil].forEach((a, i) => {
+                    let opt = document.createElement('option');
+                    opt.value = i; opt.innerText = a.nama;
+                    selectNama.appendChild(opt);
+                });
+                selectNama.onchange = () => {
+                    if(selectNama.value !== "") {
+                        btn.className = "w-full bg-champion text-white font-bold py-4 rounded-xl transition duration-300 shadow-xl hover:scale-[1.02]";
+                        btn.style.pointerEvents = "auto";
+                    }
+                };
+            }
+        }
+
+        function showReport() {
+            const wil = document.getElementById('selectPengcab').value;
+            const idx = document.getElementById('selectNama').value;
+            const a = dbData[wil][idx];
+
+            document.getElementById('imgAtlet').src = a.foto;
+            document.getElementById('txtNama').innerText = a.nama;
+            document.getElementById('txtCabor').innerText = a.cabor;
+            document.getElementById('txtWilayah').innerText = wil;
+            document.getElementById('txtTotalSkor').innerText = a.totalSkor;
+            document.getElementById('txtPredikat').innerText = a.predikat;
+            document.getElementById('txtAbsen').innerText = a.absensi;
+            document.getElementById('txtDetailAbsen').innerText = a.hadir + " dari " + a.totalSesi;
+            document.getElementById('barAbsen').style.width = a.absensi + "%";
+            document.getElementById('txtCatatan').innerText = '"' + a.catatan + '"';
+
+            const p = document.getElementById('txtPredikat');
+            p.className = "text-[10px] font-black uppercase mt-2 inline-block px-2 py-1 rounded " + 
+                         (a.totalSkor >= 27 ? "bg-blue-100 text-blue-800" : (a.totalSkor >= 21 ? "bg-green-100 text-green-800" : "bg-yellow-100 text-yellow-800"));
+
+            const tbl = document.getElementById('tableContainer');
+            tbl.innerHTML = '';
+            labelsTes.forEach((l, i) => {
+                let n = a.nilai[i];
+                let color = n >= 5 ? 'bg-blue-600' : (n >= 4 ? 'bg-green-500' : 'bg-yellow-500');
+                tbl.innerHTML += `
+                <div class="flex items-center justify-between border-b border-gray-50 pb-3 last:border-0">
+                    <div class="text-xs font-bold text-gray-500 w-28 uppercase">${l}</div>
+                    <div class="text-sm font-black text-gray-800">${a.detail[i]}</div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="${color} h-full" style="width:${n*20}%"></div>
                         </div>
-                        <span class="font-bold text-champion text-xs w-4 text-right">${nilai}</span>
+                        <span class="text-xs font-black text-champion w-4">${n}</span>
                     </div>
                 </div>`;
-          tbl.innerHTML += htmlItem;
-        });
+            });
 
-        renderChart(atlet.nilai);
-        document.getElementById("section-selector").classList.add("hidden");
-        document.getElementById("section-report").classList.remove("hidden");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-
-      function renderChart(dataValues) {
-        const ctx = document.getElementById("radarChart").getContext("2d");
-        if (chartInstance) {
-          chartInstance.destroy();
+            renderChart(a.nilai);
+            document.getElementById('section-selector').classList.add('hidden');
+            document.getElementById('section-report').classList.remove('hidden');
+            window.scrollTo(0,0);
         }
 
-        chartInstance = new Chart(ctx, {
-          type: "radar",
-          data: {
-            labels: labelsTes,
-            datasets: [
-              {
-                label: "Skor Performa",
-                data: dataValues,
-                backgroundColor: "rgba(127, 29, 29, 0.4)",
-                borderColor: "#7f1d1d",
-                borderWidth: 3,
-                pointBackgroundColor: "#fbbf24",
-                pointBorderColor: "#fff",
-                pointRadius: 5,
-                pointHoverRadius: 8,
-              },
-              {
-                label: "Target Ideal",
-                data: [5, 5, 5, 5, 5, 5],
-                backgroundColor: "transparent",
-                borderColor: "rgba(0,0,0,0.05)",
-                borderWidth: 1,
-                borderDash: [5, 5],
-                pointRadius: 0,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              r: {
-                angleLines: { color: "#f1f5f9" },
-                grid: { color: "#f1f5f9" },
-                pointLabels: {
-                  font: { size: 10, weight: "bold", family: "Oswald" },
-                  color: "#94a3b8",
+        function renderChart(vals) {
+            const ctx = document.getElementById('radarChart');
+            if(chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labelsTes,
+                    datasets: [{
+                        data: vals,
+                        backgroundColor: 'rgba(153, 27, 27, 0.2)',
+                        borderColor: '#991b1b',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fbbf24',
+                        pointRadius: 4
+                    }]
                 },
-                suggestedMin: 0,
-                suggestedMax: 5,
-                ticks: { display: false, stepSize: 1 },
-              },
-            },
-            plugins: { legend: { display: false } },
-          },
-        });
-      }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: { suggestedMin: 0, suggestedMax: 5, ticks: { display: false }, grid: { color: '#f1f5f9' } }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
     </script>
-  </body>
+</body>
 </html>
