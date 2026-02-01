@@ -122,12 +122,12 @@
         
         <div id="loading" class="text-center py-20 hidden">
             <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-gold border-t-maroon mb-4"></div>
-            <p class="font-bold text-maroon uppercase text-xs tracking-[0.2em] animate-pulse">Mengakses Kolom Z...</p>
+            <p class="font-bold text-maroon uppercase text-xs tracking-[0.2em] animate-pulse">Menghubungkan Database...</p>
         </div>
 
         <div id="pdfAction" class="hidden text-right mb-6 no-print fade-in">
             <button onclick="downloadPDF()" class="bg-gray-800 text-gold border border-gold px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-black transition shadow-lg inline-flex items-center gap-2">
-                <i class="fas fa-file-pdf text-lg"></i> Download PDF
+                <i class="fas fa-file-pdf text-lg"></i> Download PDF Laporan
             </button>
         </div>
 
@@ -190,8 +190,8 @@
             <i class="fas fa-exclamation-circle text-3xl text-red-400 mb-3"></i>
             <p class="text-red-800 font-bold uppercase text-xs tracking-widest">Data Tidak Ditemukan</p>
             <p class="text-[10px] text-gray-500 mt-2 px-8">
-                Sistem telah memeriksa <strong>Kolom Z (Urutan ke-26)</strong> namun tidak menemukan kecocokan periode. <br>
-                Pastikan pilihan Cabang dan Wilayah sesuai.
+                Data kehadiran 0% atau atlet tidak ditemukan.<br>
+                Cek kolom <strong>"ABSENSI"</strong> di Spreadsheet Anda.
             </p>
         </div>
 
@@ -251,14 +251,12 @@
 
             if (!cabor || !wil) { alert("Mohon lengkapi pilihan Cabang & Wilayah!"); return; }
 
-            // UI Reset
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('printableArea').classList.add('hidden');
             document.getElementById('emptyState').classList.add('hidden');
             document.getElementById('errorState').classList.add('hidden');
             document.getElementById('pdfAction').classList.add('hidden');
             
-            // Header Info
             document.getElementById('reportPeriod').innerText = `PERIODE ${namaBulan.toUpperCase()} 2026`;
             document.getElementById('reportDetail').innerText = `${cabor.toUpperCase()} - ${wil.toUpperCase()}`;
             document.getElementById('printDate').innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -276,33 +274,36 @@
         }
 
         function processSpreadsheetData(results, namaBulan, angkaBulan, cabor, wil) {
-            const data = results.data;
-            const headers = results.meta.fields; // Daftar nama kolom (Header)
+            // 1. NORMALISASI HEADER (MEMBUAT SEMUA HEADER JADI HURUF BESAR)
+            // Ini kunci agar "Absensi" terbaca sebagai "ABSENSI"
+            const data = results.data.map(row => {
+                const newRow = {};
+                Object.keys(row).forEach(key => {
+                    newRow[key.trim().toUpperCase()] = row[key]; // Ubah key jadi UPPERCASE
+                });
+                return newRow;
+            });
 
-            // TEKNIK: AKSES KOLOM Z DENGAN INDEX (Index ke-25 karena array mulai dari 0. A=0 ... Z=25)
-            // Kita cari nama header yang ada di posisi index ke-25
-            const headerKolomZ = headers[25]; 
-            console.log("Header Kolom Z ditemukan:", headerKolomZ); // Debugging di Console
+            // 2. SCAN TOTAL SESI (DARI KOLOM Z / INDEX 25)
+            // Karena header dinormalisasi, kita harus mencari header kolom ke-26 dari meta asli
+            const originalHeaders = results.meta.fields;
+            const keyKolomZ = (originalHeaders[25] || "").trim().toUpperCase(); // Pastikan ambil header kolom Z dan kapitalkan
 
-            // 1. SCAN TOTAL SESI DI KOLOM Z
             const sampleRow = data.find(item => {
-                // Ambil data di kolom Z (apapun nama headernya)
-                const isiKolomZ = (headerKolomZ && item[headerKolomZ]) ? item[headerKolomZ].toString().toLowerCase() : "";
-                // Cek apakah di kolom Z ada kata "Januari" atau "Bulan 1"
-                return isiKolomZ.includes(namaBulan) || isiKolomZ.includes(`bulan ${angkaBulan}`) || isiKolomZ.includes(`/${angkaBulan}/`);
+                const isiKolomZ = (keyKolomZ && item[keyKolomZ]) ? item[keyKolomZ].toString().toLowerCase() : "";
+                return isiKolomZ.includes(namaBulan) || isiKolomZ.includes(`bulan ${angkaBulan}`);
             });
 
             if (sampleRow) {
-                const isiKolomZ = sampleRow[headerKolomZ].toString().toLowerCase();
+                const isiKolomZ = sampleRow[keyKolomZ].toString().toLowerCase();
                 const match = isiKolomZ.match(/(\d+)\s*x/);
                 totalSesiDitemukan = (match && match[1]) ? parseInt(match[1]) : 12;
             } else {
-                totalSesiDitemukan = 12; 
+                totalSesiDitemukan = 12;
             }
 
-            // 2. FILTER DATA UTAMA
+            // 3. FILTER DATA UTAMA
             const filteredData = data.filter(item => {
-                // LOGIKA WILAYAH (Mengikuti rapor.html)
                 const dbWilayah = (item["WILAYAH"] || "").toLowerCase().replace(/[\s\.]/g, ""); 
                 const filterWilayah = wil.toLowerCase().replace(/[\s\.]/g, "");
                 
@@ -311,21 +312,18 @@
                 else if (filterWilayah.includes("kbb") && (dbWilayah.includes("kbb") || dbWilayah.includes("bandungbarat"))) matchWilayah = true;
                 else if (filterWilayah.includes("bandung") && !filterWilayah.includes("barat") && dbWilayah.includes("bandung") && !dbWilayah.includes("barat")) matchWilayah = true;
 
-                // LOGIKA PROGRAM
                 const dbProgram = (item["PROGRAM YANG DIPILIH"] || "").toLowerCase();
                 if (!dbProgram.includes(cabor.toLowerCase())) return false;
 
-                // LOGIKA PERIODE (BACA KOLOM Z)
-                const isiKolomZ = (headerKolomZ && item[headerKolomZ]) ? item[headerKolomZ].toString().toLowerCase() : "";
+                // PERIODE (BACA KOLOM Z)
+                const isiKolomZ = (keyKolomZ && item[keyKolomZ]) ? item[keyKolomZ].toString().toLowerCase() : "";
                 
-                // Jika kolom Z kosong, anggap data ini valid untuk ditampilkan (Fallback)
-                // ATAU Jika kolom Z mengandung nama bulan yang dicari
                 let matchPeriode = false;
                 if (isiKolomZ.includes(namaBulan)) matchPeriode = true;
                 else if (isiKolomZ.includes(`bulan ${angkaBulan}`) || isiKolomZ.includes(`bulan 0${angkaBulan}`)) matchPeriode = true;
                 else if (isiKolomZ.includes(`${angkaBulan}/2026`)) matchPeriode = true;
                 
-                // Khusus: Jika Kolom Z benar-benar kosong di spreadsheet tapi filternya Bulan Januari, tampilkan saja (Asumsi data default = Januari)
+                // Fallback jika Z kosong tapi bulan Januari
                 if (isiKolomZ.trim() === "" && angkaBulan == 1) matchPeriode = true;
 
                 return matchWilayah && matchPeriode;
@@ -354,7 +352,9 @@
 
             data.forEach((atlet) => {
                 const nama = atlet["NAMA LENGKAP"] || "Tanpa Nama";
-                const persentase = parseInt(atlet["ABSENSI"]) || 0;
+                
+                // DATA KUNCI: ABSENSI (Pastikan Header sudah UPPERCASE)
+                const persentase = parseInt(atlet["ABSENSI"]) || 0; 
                 totalPersen += persentase;
 
                 const hadir = Math.round((persentase / 100) * totalSesiDitemukan);
