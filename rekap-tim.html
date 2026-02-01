@@ -29,160 +29,182 @@
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* Layout Khusus PDF/Print */
         @media print {
             .no-print { display: none !important; }
             body { background: white; -webkit-print-color-adjust: exact; }
             #printableArea { box-shadow: none; border: none; padding: 0; margin: 0; width: 100%; }
-            #atletGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-            .break-inside-avoid { page-break-inside: avoid; }
+            #atletGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+            .card-atlet { break-inside: avoid; page-break-inside: avoid; border: 1px solid #eee; }
         }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <nav class="bg-maroon text-white p-4 sticky top-0 z-50 border-b border-gold/30 shadow-md no-print">
+    <nav class="bg-maroon/95 backdrop-blur-md text-white p-4 sticky top-0 z-50 border-b border-gold/30 no-print">
         <div class="container mx-auto flex justify-between items-center px-4">
-            <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition group">
-                <i class="fas fa-chevron-left text-gold group-hover:-translate-x-1 transition-transform"></i>
-                <span class="text-xs font-bold uppercase tracking-widest">Kembali ke Home</span>
+            <a href="index.html" class="flex items-center gap-3 group">
+                <img src="logo-csa.png" class="h-10 w-10 border border-gold rounded-full bg-white shadow-lg object-contain p-0.5">
+                <div class="flex flex-col leading-none">
+                    <span class="text-lg font-display font-bold text-gold uppercase tracking-tight">Champion</span>
+                    <span class="text-[9px] tracking-[0.2em] italic uppercase text-gray-300">Team Report</span>
+                </div>
             </a>
-            <div class="flex items-center gap-2">
-                <img src="logo-csa.png" class="h-8 w-8 rounded-full bg-white p-0.5 border border-gold object-contain" onerror="this.style.display='none'">
-                <span class="font-display font-bold text-gold text-sm uppercase italic hidden md:block">Team Performance</span>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="text-[10px] font-bold uppercase tracking-widest hover:text-gold transition">Home</a>
+                <a href="rapor.html" class="text-[10px] font-bold uppercase tracking-widest hover:text-gold transition">Rapor Atlet</a>
             </div>
         </div>
     </nav>
 
-    <header class="bg-maroon py-12 text-center text-white border-b-4 border-gold relative overflow-hidden no-print">
+    <section class="bg-maroon pt-12 pb-24 px-6 text-center text-white border-b-4 border-gold relative overflow-hidden no-print">
         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-        <div class="container mx-auto px-6 relative z-10">
-            <h1 class="text-4xl md:text-5xl font-display font-bold text-gold uppercase mb-3 drop-shadow-md">Monthly Evaluation</h1>
-            <p id="displayPeriode" class="text-gray-300 font-sport uppercase tracking-[0.2em] text-xs italic">Sistem Laporan & Evaluasi Atlet</p>
+        <div class="container mx-auto relative z-10">
+            <h1 class="text-3xl md:text-5xl font-display font-bold text-gold uppercase mb-2 drop-shadow-md">Rekapitulasi Tim</h1>
+            <p class="text-gray-300 font-sport uppercase tracking-[0.2em] text-xs italic">Evaluasi Kehadiran & Performa Bulanan</p>
         </div>
-    </header>
+    </section>
 
-    <section class="container mx-auto px-6 -mt-8 relative z-20 no-print">
-        <div class="bg-white p-6 rounded-[2rem] shadow-2xl border border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+    <section class="container mx-auto px-4 md:px-6 -mt-16 relative z-20 no-print">
+        <div class="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-2xl border border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-5 items-end">
             
-            <div>
-                <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Bulan</label>
-                <select id="filterBulan" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
-                    <option value="1">Januari</option>
-                    <option value="2">Februari</option>
-                    <option value="3">Maret</option>
-                    <option value="4">April</option>
-                    <option value="5">Mei</option>
-                    <option value="6">Juni</option>
-                    <option value="7">Juli</option>
-                    <option value="8">Agustus</option>
-                    <option value="9">September</option>
-                    <option value="10">Oktober</option>
-                    <option value="11">November</option>
-                    <option value="12">Desember</option>
-                </select>
+            <div class="group">
+                <label class="text-[10px] font-bold text-gray-400 uppercase ml-3 mb-1 block">Periode Laporan</label>
+                <div class="relative">
+                    <select id="filterBulan" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-4 outline-none focus:border-gold font-bold text-sm appearance-none cursor-pointer">
+                        <option value="1">Januari</option>
+                        <option value="2">Februari</option>
+                        <option value="3">Maret</option>
+                        <option value="4">April</option>
+                        <option value="5">Mei</option>
+                        <option value="6">Juni</option>
+                        <option value="7">Juli</option>
+                        <option value="8">Agustus</option>
+                        <option value="9">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Desember</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400"><i class="fas fa-chevron-down"></i></div>
+                </div>
+            </div>
+
+            <div class="group">
+                <label class="text-[10px] font-bold text-gray-400 uppercase ml-3 mb-1 block">Cabang Olahraga</label>
+                <div class="relative">
+                    <select id="filterCabor" onchange="updateWilayahOptions()" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-4 outline-none focus:border-gold font-bold text-sm appearance-none cursor-pointer">
+                        <option value="">-- Pilih Cabang --</option>
+                        <option value="Hapkido">Hapkido</option>
+                        <option value="Karate">Karate</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400"><i class="fas fa-chevron-down"></i></div>
+                </div>
+            </div>
+
+            <div class="group">
+                <label class="text-[10px] font-bold text-gray-400 uppercase ml-3 mb-1 block">Wilayah</label>
+                <div class="relative">
+                    <select id="filterWilayah" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-4 outline-none focus:border-gold font-bold text-sm appearance-none cursor-pointer">
+                        <option value="">-- Pilih Wilayah --</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400"><i class="fas fa-chevron-down"></i></div>
+                </div>
             </div>
 
             <div>
-                <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Cabang</label>
-                <select id="filterCabor" onchange="updateWilayahOptions()" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
-                    <option value="">-- Pilih Cabang --</option>
-                    <option value="Hapkido">Hapkido</option>
-                    <option value="Karate">Karate</option>
-                </select>
-            </div>
-
-            <div>
-                <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Wilayah</label>
-                <select id="filterWilayah" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
-                    <option value="">-- Pilih Wilayah --</option>
-                </select>
-            </div>
-
-            <div>
-                <button onclick="fetchData()" class="w-full gold-gradient text-maroon font-bold py-3 rounded-2xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-xs">
-                    Tampilkan Data <i class="fas fa-search ml-1"></i>
+                <button onclick="fetchData()" class="w-full gold-gradient text-maroon font-bold py-4 rounded-2xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-xs flex justify-center items-center gap-2">
+                    Tampilkan Data <i class="fas fa-search"></i>
                 </button>
             </div>
         </div>
     </section>
 
-    <main class="flex-grow container mx-auto px-6 py-12">
+    <main class="flex-grow container mx-auto px-4 md:px-6 py-12">
         
         <div id="loading" class="text-center py-20 hidden">
             <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-gold border-t-maroon mb-4"></div>
             <p class="font-bold text-maroon uppercase text-xs tracking-[0.2em] animate-pulse">Sedang Memproses Data...</p>
         </div>
 
-        <div id="pdfAction" class="hidden text-right mb-4 no-print fade-in">
-            <button onclick="downloadPDF()" class="bg-gray-800 text-gold border border-gold px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-black transition shadow-lg flex items-center gap-2 ml-auto">
-                <i class="fas fa-file-pdf"></i> Simpan sebagai PDF
+        <div id="pdfAction" class="hidden text-right mb-6 no-print fade-in">
+            <button onclick="downloadPDF()" class="bg-gray-800 text-gold border border-gold px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-black transition shadow-lg inline-flex items-center gap-2">
+                <i class="fas fa-file-pdf text-lg"></i> Download PDF Laporan
             </button>
-            <p class="text-[9px] text-gray-400 mt-1">atau tekan Ctrl + P untuk print langsung</p>
         </div>
 
-        <div id="printableArea" class="hidden bg-white p-8 rounded-[2rem] shadow-none md:shadow-xl border-none md:border border-gray-100">
+        <div id="printableArea" class="hidden bg-white p-8 md:p-12 rounded-[2.5rem] shadow-none md:shadow-xl border-none md:border border-gray-100">
             
-            <div class="text-center mb-6 border-b-2 border-gray-100 pb-6">
-                <img src="logo-csa.png" class="h-16 mx-auto mb-2" onerror="this.style.display='none'">
-                <h2 class="text-2xl font-display font-bold text-maroon uppercase">Laporan Evaluasi Bulanan</h2>
-                <p id="reportTitle" class="text-sm font-sport text-gold tracking-[0.2em] uppercase font-bold mt-1">--</p>
-                <p class="text-[10px] text-gray-400 mt-2">Champion Sport Academy System</p>
-            </div>
-
-            <div class="grid grid-cols-4 gap-4 mb-8">
-                <div class="bg-gray-50 p-3 rounded-xl text-center border border-gray-200">
-                    <div class="text-[8px] text-gray-500 uppercase font-bold mb-1 tracking-widest">Total Atlet</div>
-                    <div id="statTotal" class="text-xl font-sport text-maroon font-bold">0</div>
+            <div class="flex items-center justify-between border-b-2 border-gray-100 pb-8 mb-8">
+                <div class="flex items-center gap-4">
+                    <img src="logo-csa.png" class="h-16 md:h-20 w-16 md:w-20 object-contain" onerror="this.style.display='none'">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-display font-bold text-maroon uppercase leading-none">Laporan Evaluasi</h2>
+                        <p class="text-[10px] md:text-xs font-bold text-gold uppercase tracking-[0.2em] mt-1">Champion Sport Academy</p>
+                    </div>
                 </div>
-                <div class="bg-gray-50 p-3 rounded-xl text-center border border-gray-200">
-                    <div class="text-[8px] text-gray-500 uppercase font-bold mb-1 tracking-widest">Rata-rata</div>
-                    <div id="statAvg" class="text-xl font-sport text-maroon font-bold">0%</div>
-                </div>
-                <div class="bg-gray-50 p-3 rounded-xl text-center border border-gray-200">
-                    <div class="text-[8px] text-gray-500 uppercase font-bold mb-1 tracking-widest">Total Sesi</div>
-                    <div id="labelTotalSesi" class="text-xl font-sport text-maroon font-bold">12</div>
-                </div>
-                <div class="bg-gray-50 p-3 rounded-xl text-center border border-gray-200">
-                    <div class="text-[8px] text-gray-500 uppercase font-bold mb-1 tracking-widest">Status</div>
-                    <div id="statStatus" class="text-[9px] font-bold text-green-600 uppercase mt-1">Checking</div>
+                <div class="text-right">
+                    <div id="reportPeriod" class="text-xl md:text-2xl font-sport font-bold text-gray-800 uppercase">PERIODE --</div>
+                    <div id="reportDetail" class="text-xs text-gray-500 font-bold uppercase tracking-wider mt-1">--</div>
                 </div>
             </div>
 
-            <div id="atletGrid" class="grid grid-cols-3 md:grid-cols-4 gap-6"></div>
-
-            <div class="mt-12 pt-6 border-t border-gray-200 flex justify-between items-end break-inside-avoid">
-                <div class="text-[9px] text-gray-400">
-                    <p>Dicetak otomatis oleh sistem.</p>
-                    <p class="mt-1">Tanggal Cetak: <span id="printDate"></span></p>
+            <div class="grid grid-cols-4 gap-4 mb-10">
+                <div class="bg-gray-50 p-4 rounded-2xl text-center border border-gray-100">
+                    <div class="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-widest">Total Atlet</div>
+                    <div id="statTotal" class="text-2xl md:text-3xl font-sport text-maroon font-bold">0</div>
                 </div>
-                <div class="text-center">
-                    <div class="h-16"></div> 
-                    <p class="text-[10px] font-bold text-maroon uppercase border-t border-gray-400 pt-2 px-8">Mengetahui, Pelatih</p>
+                <div class="bg-gray-50 p-4 rounded-2xl text-center border border-gray-100">
+                    <div class="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-widest">Rata-rata</div>
+                    <div id="statAvg" class="text-2xl md:text-3xl font-sport text-maroon font-bold">0%</div>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-2xl text-center border border-gray-100">
+                    <div class="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-widest">Target Sesi</div>
+                    <div id="labelTotalSesi" class="text-2xl md:text-3xl font-sport text-maroon font-bold">12</div>
+                </div>
+                <div class="bg-gray-50 p-4 rounded-2xl text-center border border-gray-100">
+                    <div class="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-widest">Status Tim</div>
+                    <div id="statStatus" class="text-[10px] font-bold text-white bg-maroon px-2 py-1 rounded-lg uppercase inline-block mt-1">Check</div>
+                </div>
+            </div>
+
+            <div id="atletGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+
+            <div class="mt-16 pt-8 border-t border-gray-200 flex justify-between items-end break-inside-avoid">
+                <div class="text-[10px] text-gray-400 italic">
+                    <p>Dokumen ini digenerate otomatis oleh sistem CSA.</p>
+                    <p class="mt-1">Dicetak pada: <span id="printDate" class="font-bold"></span></p>
+                </div>
+                <div class="text-center w-48">
+                    <div class="text-[10px] font-bold text-gray-500 uppercase mb-16">Mengetahui, Pelatih Kepala</div>
+                    <div class="border-b border-gray-800"></div>
+                    <div class="text-[10px] font-bold text-maroon uppercase mt-2 tracking-wider">Champion Sport Academy</div>
                 </div>
             </div>
         </div>
         
-        <div id="emptyState" class="text-center py-20 opacity-50">
-            <i class="fas fa-clipboard-check text-6xl text-gray-300 mb-4"></i>
-            <p class="text-gray-400 uppercase text-xs tracking-widest">Siap menampilkan laporan</p>
+        <div id="emptyState" class="text-center py-20 opacity-40">
+            <i class="fas fa-clipboard-list text-6xl text-gray-300 mb-4"></i>
+            <p class="text-gray-400 uppercase text-xs tracking-widest">Pilih filter di atas untuk menampilkan data</p>
         </div>
-        <div id="errorState" class="hidden text-center py-12 bg-red-50 rounded-[2rem] border border-red-100 mt-4 mx-auto max-w-2xl">
-            <i class="fas fa-exclamation-circle text-4xl text-red-300 mb-4"></i>
-            <p class="text-red-800 font-bold uppercase text-xs tracking-widest mb-2">Data Tidak Ditemukan</p>
-            <p class="text-[10px] text-gray-500 px-8">
-                Sistem tidak menemukan data yang cocok untuk Cabang/Wilayah ini di Bulan tersebut.<br>
-                Pastikan di spreadsheet ada tulisan "Januari" atau "Bulan 1" di salah satu kolomnya.
+
+        <div id="errorState" class="hidden text-center py-10 bg-red-50 rounded-[2rem] border border-red-100 mt-4 mx-auto max-w-2xl">
+            <i class="fas fa-exclamation-circle text-3xl text-red-400 mb-3"></i>
+            <p class="text-red-800 font-bold uppercase text-xs tracking-widest">Data Tidak Ditemukan</p>
+            <p class="text-[10px] text-gray-500 mt-2 px-8">
+                Sistem tidak menemukan data dengan kriteria tersebut.<br>
+                Pastikan kolom <strong>WILAYAH</strong> dan <strong>KETERANGAN</strong> (Kolom Z) di Spreadsheet sudah terisi benar.
             </p>
         </div>
 
     </main>
 
-    <footer class="bg-black text-white py-8 text-center border-t-4 border-gold mt-auto no-print">
+    <footer class="bg-black text-white py-10 text-center border-t-4 border-gold mt-auto no-print">
         <p class="font-display text-gold text-lg italic uppercase tracking-[0.1em] font-bold mb-2">Champion Sport Academy</p>
-        <p class="text-[9px] text-gray-600 tracking-[0.5em] uppercase">© 2026 Internal System</p>
+        <p class="text-[9px] text-gray-600 tracking-[0.5em] uppercase">© 2026 Internal Team System</p>
     </footer>
 
     <script>
+        // URL SAMA PERSIS DENGAN RAPOR.HTML
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAg9NhPDYcmxERNMMc0xPAyl71vyQDqu17yXbPlAyJmcNdBd5xHrE8NYSaT-PcPeNksGYdV9lb97hC/pub?gid=1540868773&single=true&output=csv";
 
         const wilayahData = {
@@ -190,7 +212,7 @@
             "Karate": ["KBB"]
         };
         
-        let totalSesiDitemukan = 12; // Default
+        let totalSesiDitemukan = 12; // Default jika tidak ada info "12x"
 
         function updateWilayahOptions() {
             const cabor = document.getElementById('filterCabor').value;
@@ -212,24 +234,24 @@
             const namaBulan = selBulan.options[selBulan.selectedIndex].text; 
             
             const opt = {
-                margin:       [10, 10, 10, 10], 
-                filename:     `Laporan_CSA_${cabor}_${namaBulan}_2026.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true }, 
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                margin: 10,
+                filename: `Rekap_CSA_${cabor}_${namaBulan}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             html2pdf().set(opt).from(element).save();
         }
 
         function fetchData() {
-            const angkaBulan = document.getElementById('filterBulan').value; // "1"
+            const angkaBulan = document.getElementById('filterBulan').value; 
             const selBulan = document.getElementById('filterBulan');
             const namaBulan = selBulan.options[selBulan.selectedIndex].text.toLowerCase(); // "januari"
 
             const cabor = document.getElementById('filterCabor').value;
             const wil = document.getElementById('filterWilayah').value;
 
-            if (!cabor || !wil) { alert("Lengkapi filter Cabang & Wilayah!"); return; }
+            if (!cabor || !wil) { alert("Mohon lengkapi pilihan Cabang & Wilayah!"); return; }
 
             // UI Reset
             document.getElementById('loading').classList.remove('hidden');
@@ -238,85 +260,95 @@
             document.getElementById('errorState').classList.add('hidden');
             document.getElementById('pdfAction').classList.add('hidden');
             
-            // Judul
-            document.getElementById('reportTitle').innerText = `PERIODE: ${namaBulan.toUpperCase()} 2026 • ${cabor.toUpperCase()} • ${wil.toUpperCase()}`;
-            const today = new Date();
-            document.getElementById('printDate').innerText = today.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            // Update Teks Laporan
+            document.getElementById('reportPeriod').innerText = `PERIODE ${namaBulan.toUpperCase()} 2026`;
+            document.getElementById('reportDetail').innerText = `${cabor.toUpperCase()} - ${wil.toUpperCase()}`;
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('printDate').innerText = new Date().toLocaleDateString('id-ID', options);
 
             Papa.parse(spreadsheetUrl, {
                 download: true, header: true, skipEmptyLines: true,
                 complete: function(results) {
-                    
-                    // 1. CARI BARIS CONTOH UNTUK MENDETEKSI TOTAL SESI (SCAN SEMUA KOLOM)
-                    // Kita cari di SELURUH spreadsheet, baris mana yang punya teks "Januari" atau "Bulan 1"
-                    // Lalu kita cari apakah di baris itu ada tulisan "12x"
-                    const sampleRow = results.data.find(item => {
-                        // Gabungkan semua nilai kolom menjadi satu string panjang
-                        const rowString = Object.values(item).join(" ").toLowerCase();
-                        return rowString.includes(namaBulan) || rowString.includes(`bulan ${angkaBulan}`) || rowString.includes(`/${angkaBulan}/`);
-                    });
-
-                    if (sampleRow) {
-                        const rowString = Object.values(sampleRow).join(" ").toLowerCase();
-                        const matchSesi = rowString.match(/(\d+)\s*x/); 
-                        if (matchSesi && matchSesi[1]) {
-                            totalSesiDitemukan = parseInt(matchSesi[1]);
-                        } else {
-                            totalSesiDitemukan = 12; // Reset ke default
-                        }
-                    }
-
-                    // 2. FILTER DATA UTAMA (SCAN SEMUA KOLOM UNTUK BULAN)
-                    const filteredData = results.data.filter(item => {
-                        // Ambil Data Spesifik (Sesuai Rapor.html)
-                        const dbProgram = (item["PROGRAM YANG DIPILIH"] || "").toLowerCase();
-                        const dbWilayah = (item["WILAYAH"] || "").toLowerCase().replace(/[\s\.]/g, ""); 
-                        
-                        // TEKNIK JITU: Gabungkan semua isi kolom baris ini jadi satu kalimat panjang
-                        const rowFullText = Object.values(item).join(" ").toLowerCase();
-
-                        // Filter User
-                        const filterProgram = cabor.toLowerCase();
-                        const filterWilayah = wil.toLowerCase().replace(/[\s\.]/g, "");
-
-                        // A. Cek Wilayah (Fleksibel)
-                        let matchWilayah = false;
-                        if (filterWilayah.includes("cimahi") && dbWilayah.includes("cimahi")) matchWilayah = true;
-                        else if (filterWilayah.includes("kbb") && (dbWilayah.includes("kbb") || dbWilayah.includes("bandungbarat"))) matchWilayah = true;
-                        else if (filterWilayah.includes("bandung") && !filterWilayah.includes("barat") && dbWilayah.includes("bandung") && !dbWilayah.includes("barat")) matchWilayah = true;
-
-                        // B. Cek Program
-                        const matchProgram = dbProgram.includes(filterProgram);
-
-                        // C. Cek Periode (Cari "Januari" atau "Bulan 1" di MANA SAJA dalam baris ini)
-                        let matchPeriode = false;
-                        if (rowFullText.includes(namaBulan)) matchPeriode = true;
-                        else if (rowFullText.includes(`bulan ${angkaBulan}`) || rowFullText.includes(`bulan 0${angkaBulan}`)) matchPeriode = true;
-                        else if (rowFullText.includes(`${angkaBulan}/2026`)) matchPeriode = true;
-
-                        return matchProgram && matchWilayah && matchPeriode;
-                    });
-
-                    if (filteredData.length === 0) {
-                        document.getElementById('loading').classList.add('hidden');
-                        document.getElementById('errorState').classList.remove('hidden');
-                    } else {
-                        renderData(filteredData);
-                    }
+                    processSpreadsheetData(results.data, namaBulan, angkaBulan, cabor, wil);
                 },
                 error: function() {
-                    alert("Gagal koneksi database.");
+                    alert("Gagal mengambil data. Periksa koneksi internet.");
                     document.getElementById('loading').classList.add('hidden');
                 }
             });
         }
 
-        function renderData(data) {
+        function processSpreadsheetData(data, namaBulan, angkaBulan, cabor, wil) {
+            // 1. SCANNING DATA UNTUK MENEMUKAN INFO "TOTAL SESI" (Contoh: "12x")
+            // Kita mencari di seluruh kolom baris yang relevan dengan bulan ini
+            const sampleRow = data.find(item => {
+                const rowStr = Object.values(item).join(" ").toLowerCase();
+                return rowStr.includes(namaBulan) || rowStr.includes(`bulan ${angkaBulan}`) || rowStr.includes(`/${angkaBulan}/`);
+            });
+
+            if (sampleRow) {
+                const rowStr = Object.values(sampleRow).join(" ").toLowerCase();
+                // Regex mencari angka sebelum huruf 'x' (contoh: 12x, 10x, 8x)
+                const match = rowStr.match(/(\d+)\s*x/);
+                if (match && match[1]) {
+                    totalSesiDitemukan = parseInt(match[1]);
+                } else {
+                    totalSesiDitemukan = 12; // Default
+                }
+            } else {
+                totalSesiDitemukan = 12; // Default aman
+            }
+
+            // 2. FILTER DATA UTAMA
+            const filteredData = data.filter(item => {
+                // Ambil Data Kolom (Sesuai Rapor.html)
+                // Kita gabungkan semua isi baris menjadi satu string panjang untuk pencarian "Keterangan" yang fleksibel
+                const rowFullText = Object.values(item).join(" ").toLowerCase();
+                
+                // Normalisasi Data Wilayah & Program
+                const dbProgram = (item["PROGRAM YANG DIPILIH"] || "").toLowerCase();
+                const dbWilayah = (item["WILAYAH"] || "").toLowerCase().replace(/[\s\.]/g, ""); // Hapus spasi & titik
+
+                const filterProgram = cabor.toLowerCase();
+                const filterWilayah = wil.toLowerCase().replace(/[\s\.]/g, "");
+
+                // Cek Program
+                if (!dbProgram.includes(filterProgram)) return false;
+
+                // Cek Wilayah (Logic Smart Matching)
+                let matchWilayah = false;
+                if (filterWilayah.includes("cimahi") && dbWilayah.includes("cimahi")) matchWilayah = true;
+                else if (filterWilayah.includes("kbb") && (dbWilayah.includes("kbb") || dbWilayah.includes("bandungbarat"))) matchWilayah = true;
+                else if (filterWilayah.includes("bandung") && !filterWilayah.includes("barat") && dbWilayah.includes("bandung") && !dbWilayah.includes("barat")) matchWilayah = true;
+                
+                if (!matchWilayah) return false;
+
+                // Cek Periode (Mencari Nama Bulan / Angka Bulan di Kolom Z atau kolom manapun)
+                let matchPeriode = false;
+                if (rowFullText.includes(namaBulan)) matchPeriode = true; // "januari"
+                else if (rowFullText.includes(`bulan ${angkaBulan}`) || rowFullText.includes(`bulan 0${angkaBulan}`)) matchPeriode = true; // "bulan 1"
+                else if (rowFullText.includes(`${angkaBulan}/2026`) || rowFullText.includes(`0${angkaBulan}/2026`)) matchPeriode = true; // "1/2026"
+
+                return matchPeriode;
+            });
+
+            if (filteredData.length === 0) {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('errorState').classList.remove('hidden');
+            } else {
+                renderGrid(filteredData);
+            }
+        }
+
+        function renderGrid(data) {
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('printableArea').classList.remove('hidden');
             document.getElementById('pdfAction').classList.remove('hidden');
             
+            // Update Info Statistik
             document.getElementById('labelTotalSesi').innerText = totalSesiDitemukan;
+            document.getElementById('statTotal').innerText = data.length;
 
             const grid = document.getElementById('atletGrid');
             grid.innerHTML = ''; 
@@ -324,49 +356,48 @@
             let totalPersen = 0;
 
             data.forEach((atlet, index) => {
-                // Kolom NAMA LENGKAP dari spreadsheet
                 const nama = atlet["NAMA LENGKAP"] || "Tanpa Nama";
-                
-                // Kolom ABSENSI dari spreadsheet
                 const persentase = parseInt(atlet["ABSENSI"]) || 0;
-                
-                const hadir = Math.round((persentase / 100) * totalSesiDitemukan);
-                
-                // Kolom FOTO TERBAIK dari spreadsheet
-                const fotoRaw = atlet["FOTO TERBAIK"];
-                const foto = (fotoRaw && fotoRaw.length > 5) ? fotoRaw : `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=630000&color=fff&size=128&bold=true`;
-
                 totalPersen += persentase;
 
+                // Hitung Hadir berdasarkan Total Sesi yang ditemukan
+                const hadir = Math.round((persentase / 100) * totalSesiDitemukan);
+                
+                // Foto & Status
+                const fotoRaw = atlet["FOTO TERBAIK"];
+                const foto = (fotoRaw && fotoRaw.length > 10) ? fotoRaw : `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=630000&color=fff&bold=true`;
+                
+                let colorClass = persentase >= 80 ? 'text-green-600' : (persentase >= 60 ? 'text-yellow-600' : 'text-red-600');
+
                 grid.innerHTML += `
-                    <div class="text-center p-2 mb-2 break-inside-avoid">
-                        <img src="${foto}" class="w-16 h-16 rounded-full mx-auto mb-2 object-cover border-2 border-gold shadow-sm bg-gray-100">
-                        <h3 class="font-sport text-[10px] text-maroon uppercase font-bold leading-tight line-clamp-1">${nama}</h3>
-                        <div class="mt-1 bg-gray-50 rounded px-2 py-1 inline-block border border-gray-100">
-                             <span class="text-[10px] font-bold ${persentase >= 80 ? 'text-green-700' : 'text-orange-600'}">${hadir}/${totalSesiDitemukan} (${persentase}%)</span>
+                    <div class="card-atlet bg-gray-50 rounded-2xl p-4 text-center border border-gray-100 flex flex-col items-center">
+                        <img src="${foto}" class="w-16 h-16 rounded-full object-cover border-2 border-gold shadow-sm mb-3 bg-white">
+                        <h3 class="font-sport text-xs text-maroon uppercase font-bold leading-tight mb-1 line-clamp-1 w-full">${nama}</h3>
+                        <div class="mt-auto pt-2 w-full">
+                            <div class="bg-white border border-gray-200 rounded-lg py-1 px-2">
+                                <span class="text-[10px] font-bold ${colorClass}">
+                                    ${hadir} / ${totalSesiDitemukan} (${persentase}%)
+                                </span>
+                            </div>
                         </div>
                     </div>
                 `;
             });
 
-            const avgPresence = Math.round(totalPersen / data.length);
-            updateStats(data.length, avgPresence);
-        }
-
-        function updateStats(total, avg) {
-            document.getElementById('statTotal').innerText = total;
+            // Rata-rata Tim
+            const avg = Math.round(totalPersen / data.length);
             document.getElementById('statAvg').innerText = avg + "%";
             
             const statusEl = document.getElementById('statStatus');
-            if (avg >= 85) {
+            if (avg >= 80) {
                 statusEl.innerText = "Excellent";
-                statusEl.className = "text-[9px] font-bold text-green-700 uppercase mt-2 bg-green-50 px-2 py-1 rounded border border-green-200";
-            } else if (avg >= 70) {
+                statusEl.className = "text-[10px] font-bold text-white bg-green-600 px-3 py-1 rounded-lg uppercase inline-block mt-1";
+            } else if (avg >= 60) {
                 statusEl.innerText = "Good";
-                statusEl.className = "text-[9px] font-bold text-blue-700 uppercase mt-2 bg-blue-50 px-2 py-1 rounded border border-blue-200";
+                statusEl.className = "text-[10px] font-bold text-white bg-blue-600 px-3 py-1 rounded-lg uppercase inline-block mt-1";
             } else {
-                statusEl.innerText = "Warning";
-                statusEl.className = "text-[9px] font-bold text-orange-700 uppercase mt-2 bg-orange-50 px-2 py-1 rounded border border-orange-200";
+                statusEl.innerText = "Need Focus";
+                statusEl.className = "text-[10px] font-bold text-white bg-red-500 px-3 py-1 rounded-lg uppercase inline-block mt-1";
             }
         }
     </script>
