@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="id" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rekap Laporan Tim - Champion Sport Academy</title>
+
+    <link rel="icon" type="image/png" href="logo-csa.png" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&family=Oswald:wght@700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { maroon: "#630000", gold: "#D4AF37" },
+            fontFamily: { display: ["Playfair Display", "serif"], sans: ["Poppins", "sans-serif"], sport: ["Oswald", "sans-serif"] },
+          },
+        },
+      };
+    </script>
+    <style>
+      .gold-gradient {
+        background: linear-gradient(135deg, #d4af37 0%, #f9e27d 50%, #b8860b 100%);
+      }
+      .fade-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800 font-sans">
+    <nav class="bg-maroon text-white p-4 sticky top-0 z-50 border-b border-gold/30">
+      <div class="container mx-auto flex justify-between items-center px-4">
+        <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition">
+          <i class="fas fa-chevron-left text-gold"></i>
+          <span class="text-xs font-bold uppercase tracking-widest">Kembali ke Home</span>
+        </a>
+        <div class="flex items-center gap-2">
+          <img src="logo-csa.png" class="h-8 w-8 rounded-full bg-white p-0.5 border border-gold" />
+          <span class="font-display font-bold text-gold text-sm uppercase italic">Team Performance</span>
+        </div>
+      </div>
+    </nav>
+
+    <header class="bg-maroon py-12 text-center text-white border-b-4 border-gold">
+      <div class="container mx-auto px-6">
+        <h1 class="text-4xl md:text-5xl font-display font-bold text-gold uppercase mb-2">Monthly Evaluation</h1>
+        <p id="displayPeriode" class="text-gray-400 font-sport uppercase tracking-[0.3em] text-xs italic">Pilih Periode Laporan</p>
+      </div>
+    </header>
+
+    <section class="container mx-auto px-6 -mt-8">
+      <div class="bg-white p-6 rounded-[2.5rem] shadow-2xl border border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Bulan</label>
+          <select id="filterBulan" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
+            <option value="Januari">Januari</option>
+            <option value="Februari">Februari</option>
+            <option value="Maret">Maret</option>
+            <option value="April">April</option>
+            <option value="Mei">Mei</option>
+            <option value="Juni">Juni</option>
+            <option value="Juli">Juli</option>
+            <option value="Agustus">Agustus</option>
+            <option value="September">September</option>
+            <option value="Oktober">Oktober</option>
+            <option value="November">November</option>
+            <option value="Desember">Desember</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Cabang</label>
+          <select id="filterCabor" onchange="updateWilayahOptions()" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
+            <option value="">-- Pilih Cabang --</option>
+            <option value="Hapkido">Hapkido</option>
+            <option value="Karate">Karate</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Wilayah</label>
+          <select id="filterWilayah" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
+            <option value="">-- Pilih Wilayah --</option>
+          </select>
+        </div>
+        <div>
+          <button onclick="fetchData()" class="w-full gold-gradient text-maroon font-bold py-4 rounded-2xl shadow-lg hover:scale-[1.02] transition uppercase tracking-widest text-xs">Cari Data <i class="fas fa-sync-alt ml-2"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="container mx-auto px-6 py-10 hidden">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon">
+          <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Total Atlet</div>
+          <div id="statTotal" class="text-3xl font-sport text-maroon">0</div>
+        </div>
+        <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon">
+          <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Avg Presence</div>
+          <div id="statAvg" class="text-3xl font-sport text-maroon">0%</div>
+        </div>
+        <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon">
+          <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Total Sesi</div>
+          <div class="text-3xl font-sport text-maroon">12</div>
+        </div>
+        <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon">
+          <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Status Tim</div>
+          <div id="statStatus" class="text-xs font-bold text-green-600 uppercase mt-2">Excellent</div>
+        </div>
+      </div>
+
+      <div id="atletGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+    </section>
+
+    <div id="loading" class="text-center py-20 hidden">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gold border-t-maroon"></div>
+      <p class="mt-4 font-bold text-maroon uppercase text-xs tracking-widest">Mencari Data...</p>
+    </div>
+
+    <script>
+      // Sesuaikan dengan URL CSV Google Sheet Anda (Sheet WEB_DATABASE)
+      const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR6zOa-YOUR-ID/pub?gid=YOUR-GID&output=csv";
+
+      const wilayahData = {
+        Hapkido: ["Kota Cimahi", "KBB", "Kabupaten Bandung"],
+        Karate: ["KBB"],
+      };
+
+      function updateWilayahOptions() {
+        const cabor = document.getElementById("filterCabor").value;
+        const wilSelect = document.getElementById("filterWilayah");
+        wilSelect.innerHTML = '<option value="">-- Pilih Wilayah --</option>';
+        if (cabor && wilayahData[cabor]) {
+          wilayahData[cabor].forEach((wil) => {
+            const opt = document.createElement("option");
+            opt.value = wil;
+            opt.text = wil;
+            wilSelect.appendChild(opt);
+          });
+        }
+      }
+
+      async function fetchData() {
+        const bulan = document.getElementById("filterBulan").value;
+        const cabor = document.getElementById("filterCabor").value;
+        const wil = document.getElementById("filterWilayah").value;
+
+        if (!cabor || !wil) {
+          alert("Pilih Cabang dan Wilayah!");
+          return;
+        }
+
+        document.getElementById("loading").classList.remove("hidden");
+        document.getElementById("dashboard").classList.add("hidden");
+        document.getElementById("displayPeriode").innerText = `REKAPITULASI ${bulan} 2026 - ${cabor} ${wil}`;
+
+        Papa.parse(spreadsheetUrl, {
+          download: true,
+          header: true,
+          complete: function (results) {
+            const filtered = results.data.filter((item) => item.BULAN === bulan && item.PROGRAM === cabor && item.WILAYAH === wil);
+            renderData(filtered);
+          },
+        });
+      }
+
+      function renderData(data) {
+        document.getElementById("loading").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+
+        const grid = document.getElementById("atletGrid");
+        grid.innerHTML = "";
+
+        if (data.length === 0) {
+          grid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-400 italic font-bold">Data tidak ditemukan untuk periode ini.</div>';
+          return;
+        }
+
+        let totalHadir = 0;
+        data.forEach((atlet) => {
+          const hadir = parseInt(atlet.HADIR) || 0;
+          totalHadir += hadir;
+          const perc = Math.round((hadir / 12) * 100);
+
+          grid.innerHTML += `
+                    <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border border-gray-100 fade-in text-center group hover:border-gold transition-all">
+                        <img src="${atlet.FOTO || "logo-csa.png"}" class="w-20 h-20 rounded-full mx-auto object-cover mb-4 border-2 border-gold/20 group-hover:border-gold transition-all">
+                        <h3 class="font-sport text-sm text-maroon uppercase mb-1 leading-tight">${atlet.NAMA}</h3>
+                        <div class="flex justify-between text-[10px] font-bold mb-2 text-gray-400">
+                            <span>KEHADIRAN: ${hadir}/12</span>
+                            <span>${perc}%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
+                            <div class="gold-gradient h-full" style="width: ${perc}%"></div>
+                        </div>
+                    </div>
+                `;
+        });
+
+        document.getElementById("statTotal").innerText = data.length;
+        document.getElementById("statAvg").innerText = Math.round((totalHadir / (data.length * 12)) * 100) + "%";
+      }
+    </script>
+  </body>
+</html>
