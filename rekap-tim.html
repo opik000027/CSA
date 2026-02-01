@@ -29,7 +29,6 @@
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Layout Khusus PDF/Print */
         @media print {
             .no-print { display: none !important; }
             body { background: white; -webkit-print-color-adjust: exact; }
@@ -123,12 +122,12 @@
         
         <div id="loading" class="text-center py-20 hidden">
             <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-gold border-t-maroon mb-4"></div>
-            <p class="font-bold text-maroon uppercase text-xs tracking-[0.2em] animate-pulse">Sedang Memproses Data...</p>
+            <p class="font-bold text-maroon uppercase text-xs tracking-[0.2em] animate-pulse">Mengakses Kolom Z...</p>
         </div>
 
         <div id="pdfAction" class="hidden text-right mb-6 no-print fade-in">
             <button onclick="downloadPDF()" class="bg-gray-800 text-gold border border-gold px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-black transition shadow-lg inline-flex items-center gap-2">
-                <i class="fas fa-file-pdf text-lg"></i> Download PDF Laporan
+                <i class="fas fa-file-pdf text-lg"></i> Download PDF
             </button>
         </div>
 
@@ -191,8 +190,8 @@
             <i class="fas fa-exclamation-circle text-3xl text-red-400 mb-3"></i>
             <p class="text-red-800 font-bold uppercase text-xs tracking-widest">Data Tidak Ditemukan</p>
             <p class="text-[10px] text-gray-500 mt-2 px-8">
-                Sistem tidak menemukan data dengan kriteria tersebut.<br>
-                Pastikan kolom <strong>WILAYAH</strong> dan <strong>KETERANGAN</strong> (Kolom Z) di Spreadsheet sudah terisi benar.
+                Sistem telah memeriksa <strong>Kolom Z (Urutan ke-26)</strong> namun tidak menemukan kecocokan periode. <br>
+                Pastikan pilihan Cabang dan Wilayah sesuai.
             </p>
         </div>
 
@@ -204,7 +203,6 @@
     </footer>
 
     <script>
-        // URL SAMA PERSIS DENGAN RAPOR.HTML
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAg9NhPDYcmxERNMMc0xPAyl71vyQDqu17yXbPlAyJmcNdBd5xHrE8NYSaT-PcPeNksGYdV9lb97hC/pub?gid=1540868773&single=true&output=csv";
 
         const wilayahData = {
@@ -212,7 +210,7 @@
             "Karate": ["KBB"]
         };
         
-        let totalSesiDitemukan = 12; // Default jika tidak ada info "12x"
+        let totalSesiDitemukan = 12; 
 
         function updateWilayahOptions() {
             const cabor = document.getElementById('filterCabor').value;
@@ -260,17 +258,15 @@
             document.getElementById('errorState').classList.add('hidden');
             document.getElementById('pdfAction').classList.add('hidden');
             
-            // Update Teks Laporan
+            // Header Info
             document.getElementById('reportPeriod').innerText = `PERIODE ${namaBulan.toUpperCase()} 2026`;
             document.getElementById('reportDetail').innerText = `${cabor.toUpperCase()} - ${wil.toUpperCase()}`;
-            
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('printDate').innerText = new Date().toLocaleDateString('id-ID', options);
+            document.getElementById('printDate').innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
             Papa.parse(spreadsheetUrl, {
                 download: true, header: true, skipEmptyLines: true,
                 complete: function(results) {
-                    processSpreadsheetData(results.data, namaBulan, angkaBulan, cabor, wil);
+                    processSpreadsheetData(results, namaBulan, angkaBulan, cabor, wil);
                 },
                 error: function() {
                     alert("Gagal mengambil data. Periksa koneksi internet.");
@@ -279,58 +275,60 @@
             });
         }
 
-        function processSpreadsheetData(data, namaBulan, angkaBulan, cabor, wil) {
-            // 1. SCANNING DATA UNTUK MENEMUKAN INFO "TOTAL SESI" (Contoh: "12x")
-            // Kita mencari di seluruh kolom baris yang relevan dengan bulan ini
+        function processSpreadsheetData(results, namaBulan, angkaBulan, cabor, wil) {
+            const data = results.data;
+            const headers = results.meta.fields; // Daftar nama kolom (Header)
+
+            // TEKNIK: AKSES KOLOM Z DENGAN INDEX (Index ke-25 karena array mulai dari 0. A=0 ... Z=25)
+            // Kita cari nama header yang ada di posisi index ke-25
+            const headerKolomZ = headers[25]; 
+            console.log("Header Kolom Z ditemukan:", headerKolomZ); // Debugging di Console
+
+            // 1. SCAN TOTAL SESI DI KOLOM Z
             const sampleRow = data.find(item => {
-                const rowStr = Object.values(item).join(" ").toLowerCase();
-                return rowStr.includes(namaBulan) || rowStr.includes(`bulan ${angkaBulan}`) || rowStr.includes(`/${angkaBulan}/`);
+                // Ambil data di kolom Z (apapun nama headernya)
+                const isiKolomZ = (headerKolomZ && item[headerKolomZ]) ? item[headerKolomZ].toString().toLowerCase() : "";
+                // Cek apakah di kolom Z ada kata "Januari" atau "Bulan 1"
+                return isiKolomZ.includes(namaBulan) || isiKolomZ.includes(`bulan ${angkaBulan}`) || isiKolomZ.includes(`/${angkaBulan}/`);
             });
 
             if (sampleRow) {
-                const rowStr = Object.values(sampleRow).join(" ").toLowerCase();
-                // Regex mencari angka sebelum huruf 'x' (contoh: 12x, 10x, 8x)
-                const match = rowStr.match(/(\d+)\s*x/);
-                if (match && match[1]) {
-                    totalSesiDitemukan = parseInt(match[1]);
-                } else {
-                    totalSesiDitemukan = 12; // Default
-                }
+                const isiKolomZ = sampleRow[headerKolomZ].toString().toLowerCase();
+                const match = isiKolomZ.match(/(\d+)\s*x/);
+                totalSesiDitemukan = (match && match[1]) ? parseInt(match[1]) : 12;
             } else {
-                totalSesiDitemukan = 12; // Default aman
+                totalSesiDitemukan = 12; 
             }
 
             // 2. FILTER DATA UTAMA
             const filteredData = data.filter(item => {
-                // Ambil Data Kolom (Sesuai Rapor.html)
-                // Kita gabungkan semua isi baris menjadi satu string panjang untuk pencarian "Keterangan" yang fleksibel
-                const rowFullText = Object.values(item).join(" ").toLowerCase();
-                
-                // Normalisasi Data Wilayah & Program
-                const dbProgram = (item["PROGRAM YANG DIPILIH"] || "").toLowerCase();
-                const dbWilayah = (item["WILAYAH"] || "").toLowerCase().replace(/[\s\.]/g, ""); // Hapus spasi & titik
-
-                const filterProgram = cabor.toLowerCase();
+                // LOGIKA WILAYAH (Mengikuti rapor.html)
+                const dbWilayah = (item["WILAYAH"] || "").toLowerCase().replace(/[\s\.]/g, ""); 
                 const filterWilayah = wil.toLowerCase().replace(/[\s\.]/g, "");
-
-                // Cek Program
-                if (!dbProgram.includes(filterProgram)) return false;
-
-                // Cek Wilayah (Logic Smart Matching)
+                
                 let matchWilayah = false;
                 if (filterWilayah.includes("cimahi") && dbWilayah.includes("cimahi")) matchWilayah = true;
                 else if (filterWilayah.includes("kbb") && (dbWilayah.includes("kbb") || dbWilayah.includes("bandungbarat"))) matchWilayah = true;
                 else if (filterWilayah.includes("bandung") && !filterWilayah.includes("barat") && dbWilayah.includes("bandung") && !dbWilayah.includes("barat")) matchWilayah = true;
+
+                // LOGIKA PROGRAM
+                const dbProgram = (item["PROGRAM YANG DIPILIH"] || "").toLowerCase();
+                if (!dbProgram.includes(cabor.toLowerCase())) return false;
+
+                // LOGIKA PERIODE (BACA KOLOM Z)
+                const isiKolomZ = (headerKolomZ && item[headerKolomZ]) ? item[headerKolomZ].toString().toLowerCase() : "";
                 
-                if (!matchWilayah) return false;
-
-                // Cek Periode (Mencari Nama Bulan / Angka Bulan di Kolom Z atau kolom manapun)
+                // Jika kolom Z kosong, anggap data ini valid untuk ditampilkan (Fallback)
+                // ATAU Jika kolom Z mengandung nama bulan yang dicari
                 let matchPeriode = false;
-                if (rowFullText.includes(namaBulan)) matchPeriode = true; // "januari"
-                else if (rowFullText.includes(`bulan ${angkaBulan}`) || rowFullText.includes(`bulan 0${angkaBulan}`)) matchPeriode = true; // "bulan 1"
-                else if (rowFullText.includes(`${angkaBulan}/2026`) || rowFullText.includes(`0${angkaBulan}/2026`)) matchPeriode = true; // "1/2026"
+                if (isiKolomZ.includes(namaBulan)) matchPeriode = true;
+                else if (isiKolomZ.includes(`bulan ${angkaBulan}`) || isiKolomZ.includes(`bulan 0${angkaBulan}`)) matchPeriode = true;
+                else if (isiKolomZ.includes(`${angkaBulan}/2026`)) matchPeriode = true;
+                
+                // Khusus: Jika Kolom Z benar-benar kosong di spreadsheet tapi filternya Bulan Januari, tampilkan saja (Asumsi data default = Januari)
+                if (isiKolomZ.trim() === "" && angkaBulan == 1) matchPeriode = true;
 
-                return matchPeriode;
+                return matchWilayah && matchPeriode;
             });
 
             if (filteredData.length === 0) {
@@ -346,7 +344,6 @@
             document.getElementById('printableArea').classList.remove('hidden');
             document.getElementById('pdfAction').classList.remove('hidden');
             
-            // Update Info Statistik
             document.getElementById('labelTotalSesi').innerText = totalSesiDitemukan;
             document.getElementById('statTotal').innerText = data.length;
 
@@ -355,18 +352,14 @@
 
             let totalPersen = 0;
 
-            data.forEach((atlet, index) => {
+            data.forEach((atlet) => {
                 const nama = atlet["NAMA LENGKAP"] || "Tanpa Nama";
                 const persentase = parseInt(atlet["ABSENSI"]) || 0;
                 totalPersen += persentase;
 
-                // Hitung Hadir berdasarkan Total Sesi yang ditemukan
                 const hadir = Math.round((persentase / 100) * totalSesiDitemukan);
-                
-                // Foto & Status
                 const fotoRaw = atlet["FOTO TERBAIK"];
                 const foto = (fotoRaw && fotoRaw.length > 10) ? fotoRaw : `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=630000&color=fff&bold=true`;
-                
                 let colorClass = persentase >= 80 ? 'text-green-600' : (persentase >= 60 ? 'text-yellow-600' : 'text-red-600');
 
                 grid.innerHTML += `
@@ -384,7 +377,6 @@
                 `;
             });
 
-            // Rata-rata Tim
             const avg = Math.round(totalPersen / data.length);
             document.getElementById('statAvg').innerText = avg + "%";
             
