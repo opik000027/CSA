@@ -29,13 +29,12 @@
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* PENGATURAN KHUSUS CETAK DOKUMEN */
         @media print {
-            .no-print { display: none !important; } /* Sembunyikan navbar/tombol saat diprint */
+            .no-print { display: none !important; }
             body { background: white; -webkit-print-color-adjust: exact; }
             #printableArea { box-shadow: none; border: none; padding: 0; margin: 0; width: 100%; }
-            #atletGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; } /* Paksa 4 kolom di kertas */
-            .break-inside-avoid { page-break-inside: avoid; } /* Mencegah foto terpotong antar halaman */
+            #atletGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+            .break-inside-avoid { page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -170,7 +169,10 @@
         <div id="errorState" class="hidden text-center py-12 bg-red-50 rounded-[2rem] border border-red-100 mt-4 mx-auto max-w-2xl">
             <i class="fas fa-exclamation-circle text-4xl text-red-300 mb-4"></i>
             <p class="text-red-800 font-bold uppercase text-xs tracking-widest mb-2">Data Tidak Ditemukan</p>
-            <p class="text-[10px] text-gray-500 px-8">Cek kembali filter Cabang & Wilayah Anda.</p>
+            <p class="text-[10px] text-gray-500 px-8">
+                Sistem tidak menemukan data yang cocok untuk Cabang/Wilayah ini di Bulan tersebut.<br>
+                Pastikan di spreadsheet ada tulisan "Januari" atau "Bulan 1" di salah satu kolomnya.
+            </p>
         </div>
 
     </main>
@@ -203,7 +205,6 @@
             }
         }
 
-        // FUNGSI DOWNLOAD PDF
         function downloadPDF() {
             const element = document.getElementById('printableArea');
             const cabor = document.getElementById('filterCabor').value;
@@ -211,20 +212,19 @@
             const namaBulan = selBulan.options[selBulan.selectedIndex].text; 
             
             const opt = {
-                margin:       [10, 10, 10, 10], // Margin kertas (mm)
+                margin:       [10, 10, 10, 10], 
                 filename:     `Laporan_CSA_${cabor}_${namaBulan}_2026.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true }, // Resolusi tinggi
+                html2canvas:  { scale: 2, useCORS: true }, 
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-            // Proses generate
             html2pdf().set(opt).from(element).save();
         }
 
         function fetchData() {
-            const angkaBulan = document.getElementById('filterBulan').value; 
+            const angkaBulan = document.getElementById('filterBulan').value; // "1"
             const selBulan = document.getElementById('filterBulan');
-            const namaBulan = selBulan.options[selBulan.selectedIndex].text.toLowerCase(); 
+            const namaBulan = selBulan.options[selBulan.selectedIndex].text.toLowerCase(); // "januari"
 
             const cabor = document.getElementById('filterCabor').value;
             const wil = document.getElementById('filterWilayah').value;
@@ -238,7 +238,7 @@
             document.getElementById('errorState').classList.add('hidden');
             document.getElementById('pdfAction').classList.add('hidden');
             
-            // Judul Laporan
+            // Judul
             document.getElementById('reportTitle').innerText = `PERIODE: ${namaBulan.toUpperCase()} 2026 • ${cabor.toUpperCase()} • ${wil.toUpperCase()}`;
             const today = new Date();
             document.getElementById('printDate').innerText = today.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -247,42 +247,52 @@
                 download: true, header: true, skipEmptyLines: true,
                 complete: function(results) {
                     
-                    // 1. CARI TOTAL SESI (LOGIKA 12X)
+                    // 1. CARI BARIS CONTOH UNTUK MENDETEKSI TOTAL SESI (SCAN SEMUA KOLOM)
+                    // Kita cari di SELURUH spreadsheet, baris mana yang punya teks "Januari" atau "Bulan 1"
+                    // Lalu kita cari apakah di baris itu ada tulisan "12x"
                     const sampleRow = results.data.find(item => {
-                        const k = (item["KETERANGAN"] || "").toLowerCase();
-                        return k.includes(namaBulan) || k.includes(`bulan ${angkaBulan}`) || k.includes(`/${angkaBulan}/`);
+                        // Gabungkan semua nilai kolom menjadi satu string panjang
+                        const rowString = Object.values(item).join(" ").toLowerCase();
+                        return rowString.includes(namaBulan) || rowString.includes(`bulan ${angkaBulan}`) || rowString.includes(`/${angkaBulan}/`);
                     });
 
                     if (sampleRow) {
-                        const infoKeterangan = sampleRow["KETERANGAN"].toLowerCase();
-                        const matchSesi = infoKeterangan.match(/(\d+)\s*x/); 
+                        const rowString = Object.values(sampleRow).join(" ").toLowerCase();
+                        const matchSesi = rowString.match(/(\d+)\s*x/); 
                         if (matchSesi && matchSesi[1]) {
                             totalSesiDitemukan = parseInt(matchSesi[1]);
                         } else {
-                            totalSesiDitemukan = 12; // Reset ke default jika tidak ada info "x"
+                            totalSesiDitemukan = 12; // Reset ke default
                         }
                     }
 
-                    // 2. FILTER DATA
+                    // 2. FILTER DATA UTAMA (SCAN SEMUA KOLOM UNTUK BULAN)
                     const filteredData = results.data.filter(item => {
+                        // Ambil Data Spesifik (Sesuai Rapor.html)
                         const dbProgram = (item["PROGRAM YANG DIPILIH"] || "").toLowerCase();
                         const dbWilayah = (item["WILAYAH"] || "").toLowerCase().replace(/[\s\.]/g, ""); 
-                        const dbKeterangan = (item["KETERANGAN"] || "").toLowerCase();
+                        
+                        // TEKNIK JITU: Gabungkan semua isi kolom baris ini jadi satu kalimat panjang
+                        const rowFullText = Object.values(item).join(" ").toLowerCase();
 
+                        // Filter User
                         const filterProgram = cabor.toLowerCase();
                         const filterWilayah = wil.toLowerCase().replace(/[\s\.]/g, "");
 
+                        // A. Cek Wilayah (Fleksibel)
                         let matchWilayah = false;
                         if (filterWilayah.includes("cimahi") && dbWilayah.includes("cimahi")) matchWilayah = true;
                         else if (filterWilayah.includes("kbb") && (dbWilayah.includes("kbb") || dbWilayah.includes("bandungbarat"))) matchWilayah = true;
                         else if (filterWilayah.includes("bandung") && !filterWilayah.includes("barat") && dbWilayah.includes("bandung") && !dbWilayah.includes("barat")) matchWilayah = true;
 
+                        // B. Cek Program
                         const matchProgram = dbProgram.includes(filterProgram);
 
+                        // C. Cek Periode (Cari "Januari" atau "Bulan 1" di MANA SAJA dalam baris ini)
                         let matchPeriode = false;
-                        if (dbKeterangan.includes(namaBulan)) matchPeriode = true;
-                        else if (dbKeterangan.includes(`bulan ${angkaBulan}`) || dbKeterangan.includes(`bulan 0${angkaBulan}`)) matchPeriode = true;
-                        else if (dbKeterangan.includes(`${angkaBulan}/2026`)) matchPeriode = true;
+                        if (rowFullText.includes(namaBulan)) matchPeriode = true;
+                        else if (rowFullText.includes(`bulan ${angkaBulan}`) || rowFullText.includes(`bulan 0${angkaBulan}`)) matchPeriode = true;
+                        else if (rowFullText.includes(`${angkaBulan}/2026`)) matchPeriode = true;
 
                         return matchProgram && matchWilayah && matchPeriode;
                     });
@@ -306,7 +316,6 @@
             document.getElementById('printableArea').classList.remove('hidden');
             document.getElementById('pdfAction').classList.remove('hidden');
             
-            // Update Angka Total Sesi di UI
             document.getElementById('labelTotalSesi').innerText = totalSesiDitemukan;
 
             const grid = document.getElementById('atletGrid');
@@ -315,12 +324,15 @@
             let totalPersen = 0;
 
             data.forEach((atlet, index) => {
+                // Kolom NAMA LENGKAP dari spreadsheet
                 const nama = atlet["NAMA LENGKAP"] || "Tanpa Nama";
+                
+                // Kolom ABSENSI dari spreadsheet
                 const persentase = parseInt(atlet["ABSENSI"]) || 0;
                 
-                // Rumus Hitung
                 const hadir = Math.round((persentase / 100) * totalSesiDitemukan);
                 
+                // Kolom FOTO TERBAIK dari spreadsheet
                 const fotoRaw = atlet["FOTO TERBAIK"];
                 const foto = (fotoRaw && fotoRaw.length > 5) ? fotoRaw : `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=630000&color=fff&size=128&bold=true`;
 
