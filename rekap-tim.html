@@ -21,189 +21,307 @@
             }
         }
     </script>
+    
     <style>
         .gold-gradient { background: linear-gradient(135deg, #D4AF37 0%, #F9E27D 50%, #B8860B 100%); }
         .fade-in { animation: fadeIn 0.5s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Hide scrollbar for cleaner look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <nav class="bg-maroon text-white p-4 sticky top-0 z-50 border-b border-gold/30">
+    <nav class="bg-maroon text-white p-4 sticky top-0 z-50 border-b border-gold/30 shadow-md">
         <div class="container mx-auto flex justify-between items-center px-4">
-            <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition">
-                <i class="fas fa-chevron-left text-gold"></i>
+            <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition group">
+                <i class="fas fa-chevron-left text-gold group-hover:-translate-x-1 transition-transform"></i>
                 <span class="text-xs font-bold uppercase tracking-widest">Kembali ke Home</span>
             </a>
             <div class="flex items-center gap-2">
-                <img src="logo-csa.png" class="h-8 w-8 rounded-full bg-white p-0.5 border border-gold">
-                <span class="font-display font-bold text-gold text-sm uppercase italic">Team Performance</span>
+                <img src="logo-csa.png" class="h-8 w-8 rounded-full bg-white p-0.5 border border-gold object-contain" onerror="this.style.display='none'">
+                <span class="font-display font-bold text-gold text-sm uppercase italic hidden md:block">Team Performance</span>
             </div>
         </div>
     </nav>
 
-    <header class="bg-maroon py-12 text-center text-white border-b-4 border-gold">
-        <div class="container mx-auto px-6">
-            <h1 class="text-4xl md:text-5xl font-display font-bold text-gold uppercase mb-2">Monthly Evaluation</h1>
-            <p id="displayPeriode" class="text-gray-400 font-sport uppercase tracking-[0.3em] text-xs italic">Pilih Periode Laporan</p>
+    <header class="bg-maroon py-16 text-center text-white border-b-4 border-gold relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <h1 class="text-4xl md:text-6xl font-display font-bold text-gold uppercase mb-3 drop-shadow-md">Monthly Evaluation</h1>
+            <p id="displayPeriode" class="text-gray-300 font-sport uppercase tracking-[0.3em] text-xs md:text-sm italic">Silakan pilih periode laporan di bawah</p>
         </div>
     </header>
 
-    <section class="container mx-auto px-6 -mt-8">
-        <div class="bg-white p-6 rounded-[2.5rem] shadow-2xl border border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div>
-                <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Bulan</label>
-                <select id="filterBulan" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
-                    <option value="Januari">Januari</option>
-                    <option value="Februari">Februari</option>
-                    <option value="Maret">Maret</option>
-                    <option value="April">April</option>
-                    <option value="Mei">Mei</option>
-                    <option value="Juni">Juni</option>
-                    <option value="Juli">Juli</option>
-                    <option value="Agustus">Agustus</option>
-                    <option value="September">September</option>
-                    <option value="Oktober">Oktober</option>
-                    <option value="November">November</option>
-                    <option value="Desember">Desember</option>
-                </select>
+    <section class="container mx-auto px-6 -mt-10 relative z-20">
+        <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-2xl border border-gray-100 grid grid-cols-1 md:grid-cols-4 gap-5 items-end">
+            
+            <div class="group">
+                <label class="text-[10px] font-bold text-gray-400 uppercase ml-3 mb-1 block group-focus-within:text-maroon transition-colors"><i class="far fa-calendar-alt mr-1"></i> Bulan</label>
+                <div class="relative">
+                    <select id="filterBulan" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-4 outline-none focus:border-gold font-bold text-sm appearance-none cursor-pointer hover:bg-white transition-colors">
+                        <option value="Januari">Januari</option>
+                        <option value="Februari">Februari</option>
+                        <option value="Maret">Maret</option>
+                        <option value="April">April</option>
+                        <option value="Mei">Mei</option>
+                        <option value="Juni">Juni</option>
+                        <option value="Juli">Juli</option>
+                        <option value="Agustus">Agustus</option>
+                        <option value="September">September</option>
+                        <option value="Oktober">Oktober</option>
+                        <option value="November">November</option>
+                        <option value="Desember">Desember</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400"><i class="fas fa-chevron-down"></i></div>
+                </div>
             </div>
-            <div>
-                <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Cabang</label>
-                <select id="filterCabor" onchange="updateWilayahOptions()" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
-                    <option value="">-- Pilih Cabang --</option>
-                    <option value="Hapkido">Hapkido</option>
-                    <option value="Karate">Karate</option>
-                </select>
+
+            <div class="group">
+                <label class="text-[10px] font-bold text-gray-400 uppercase ml-3 mb-1 block group-focus-within:text-maroon transition-colors"><i class="fas fa-fist-raised mr-1"></i> Cabang</label>
+                <div class="relative">
+                    <select id="filterCabor" onchange="updateWilayahOptions()" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-4 outline-none focus:border-gold font-bold text-sm appearance-none cursor-pointer hover:bg-white transition-colors">
+                        <option value="">-- Pilih Cabang --</option>
+                        <option value="Hapkido">Hapkido</option>
+                        <option value="Karate">Karate</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400"><i class="fas fa-chevron-down"></i></div>
+                </div>
             </div>
-            <div>
-                <label class="text-[10px] font-bold text-gray-400 uppercase ml-2 mb-1 block">Wilayah</label>
-                <select id="filterWilayah" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-3 outline-none focus:border-gold font-bold text-sm">
-                    <option value="">-- Pilih Wilayah --</option>
-                </select>
+
+            <div class="group">
+                <label class="text-[10px] font-bold text-gray-400 uppercase ml-3 mb-1 block group-focus-within:text-maroon transition-colors"><i class="fas fa-map-marker-alt mr-1"></i> Wilayah</label>
+                <div class="relative">
+                    <select id="filterWilayah" class="w-full border-2 border-gray-100 bg-gray-50 rounded-2xl p-4 outline-none focus:border-gold font-bold text-sm appearance-none cursor-pointer hover:bg-white transition-colors">
+                        <option value="">-- Pilih Wilayah --</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400"><i class="fas fa-chevron-down"></i></div>
+                </div>
             </div>
+
             <div>
-                <button onclick="fetchData()" class="w-full gold-gradient text-maroon font-bold py-4 rounded-2xl shadow-lg hover:scale-[1.02] transition uppercase tracking-widest text-xs">
-                    Cari Data <i class="fas fa-sync-alt ml-2"></i>
+                <button onclick="fetchData()" class="w-full gold-gradient text-maroon font-bold py-4 rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest text-xs flex justify-center items-center gap-2">
+                    Tampilkan Data <i class="fas fa-search"></i>
                 </button>
             </div>
         </div>
     </section>
 
-    <section id="dashboard" class="container mx-auto px-6 py-10 hidden">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon">
-                <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Total Atlet</div>
-                <div id="statTotal" class="text-3xl font-sport text-maroon">0</div>
-            </div>
-            <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon">
-                <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Avg Presence</div>
-                <div id="statAvg" class="text-3xl font-sport text-maroon">0%</div>
-            </div>
-            <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon">
-                <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Total Sesi</div>
-                <div class="text-3xl font-sport text-maroon">12</div>
-            </div>
-            <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon">
-                <div class="text-[9px] text-gray-400 uppercase font-bold mb-1">Status Tim</div>
-                <div id="statStatus" class="text-xs font-bold text-green-600 uppercase mt-2">Excellent</div>
-            </div>
+    <main class="flex-grow container mx-auto px-6 py-12">
+        
+        <div id="loading" class="text-center py-20 hidden">
+            <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-gold border-t-maroon mb-4"></div>
+            <p class="font-bold text-maroon uppercase text-xs tracking-[0.2em] animate-pulse">Sedang Mengambil Data...</p>
         </div>
 
-        <div id="atletGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-    </section>
+        <section id="dashboard" class="hidden">
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 fade-in">
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon transform hover:-translate-y-1 transition-transform">
+                    <div class="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-widest">Total Atlet</div>
+                    <div id="statTotal" class="text-4xl font-sport text-maroon font-bold">0</div>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon transform hover:-translate-y-1 transition-transform">
+                    <div class="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-widest">Rata-rata Tim</div>
+                    <div id="statAvg" class="text-4xl font-sport text-maroon font-bold">0%</div>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon transform hover:-translate-y-1 transition-transform">
+                    <div class="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-widest">Total Sesi</div>
+                    <div class="text-4xl font-sport text-maroon font-bold">12</div>
+                </div>
+                <div class="bg-white p-6 rounded-[2rem] text-center shadow-lg border-b-4 border-maroon transform hover:-translate-y-1 transition-transform">
+                    <div class="text-[9px] text-gray-400 uppercase font-bold mb-1 tracking-widest">Status Tim</div>
+                    <div id="statStatus" class="text-sm font-bold text-green-600 uppercase mt-3 bg-green-100 inline-block px-3 py-1 rounded-full">Excellent</div>
+                </div>
+            </div>
 
-    <div id="loading" class="text-center py-20 hidden">
-        <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gold border-t-maroon"></div>
-        <p class="mt-4 font-bold text-maroon uppercase text-xs tracking-widest">Mencari Data...</p>
-    </div>
+            <div id="atletGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
+
+        </section>
+
+        <div id="emptyState" class="text-center py-20 opacity-50">
+            <i class="fas fa-clipboard-list text-6xl text-gray-300 mb-4"></i>
+            <p class="text-gray-400 uppercase text-xs tracking-widest">Pilih filter di atas untuk memulai</p>
+        </div>
+
+    </main>
+
+    <footer class="bg-black text-white py-10 text-center border-t-4 border-gold mt-auto">
+        <div class="container mx-auto">
+            <p class="font-display text-gold text-lg italic uppercase tracking-[0.1em] font-bold mb-2">Champion Sport Academy</p>
+            <p class="text-[9px] text-gray-600 tracking-[0.5em] uppercase">© 2026 Internal Team System</p>
+        </div>
+    </footer>
 
     <script>
+        // URL Spreadsheet WEB_DATABASE (Format CSV)
         const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAg9NhPDYcmxERNMMc0xPAyl71vyQDqu17yXbPlAyJmcNdBd5xHrE8NYSaT-PcPeNksGYdV9lb97hC/pub?gid=1540868773&single=true&output=csv";
 
+        // Data Relasi Cabang & Wilayah
         const wilayahData = {
             "Hapkido": ["Kota Cimahi", "KBB", "Kabupaten Bandung"],
             "Karate": ["KBB"]
         };
 
+        // Fungsi Update Dropdown Wilayah berdasarkan Cabang
         function updateWilayahOptions() {
             const cabor = document.getElementById('filterCabor').value;
             const wilSelect = document.getElementById('filterWilayah');
+            
+            // Reset pilihan
             wilSelect.innerHTML = '<option value="">-- Pilih Wilayah --</option>';
+            
             if (cabor && wilayahData[cabor]) {
                 wilayahData[cabor].forEach(wil => {
                     const opt = document.createElement('option');
-                    opt.value = wil; opt.text = wil;
+                    opt.value = wil;
+                    opt.text = wil;
                     wilSelect.appendChild(opt);
                 });
             }
         }
 
-        async function fetchData() {
+        // Fungsi Utama Mengambil Data
+        function fetchData() {
             const bulan = document.getElementById('filterBulan').value;
             const cabor = document.getElementById('filterCabor').value;
             const wil = document.getElementById('filterWilayah').value;
 
+            // Validasi Input
             if (!cabor || !wil) {
-                alert("Pilih Cabang dan Wilayah!"); return;
+                alert("Mohon lengkapi pilihan Cabang dan Wilayah terlebih dahulu!");
+                return;
             }
 
+            // UI Loading State
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('dashboard').classList.add('hidden');
-            document.getElementById('displayPeriode').innerText = `REKAPITULASI ${bulan} 2026 - ${cabor} ${wil}`;
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('displayPeriode').innerHTML = `DATA PERIODE: <span class="text-gold font-bold">${bulan.toUpperCase()} 2026</span> • ${cabor.toUpperCase()} • ${wil.toUpperCase()}`;
 
+            // Parse CSV dari Google Sheets
             Papa.parse(spreadsheetUrl, {
                 download: true,
                 header: true,
+                skipEmptyLines: true,
                 complete: function(results) {
-                    // Filter berdasarkan data di spreadsheet Anda
-                    const filtered = results.data.filter(item => {
-                        return item.BULAN === bulan && 
-                               item.PROGRAM === cabor && 
-                               item.WILAYAH === wil;
+                    console.log("Total Data Terambil:", results.data.length); // Debugging Log
+
+                    // FILTERING LOGIC (Case Insensitive & Trimmed)
+                    const filteredData = results.data.filter(item => {
+                        // Ambil nilai kolom, ubah ke string, trim spasi, dan lowercase
+                        const dataBulan = (item.BULAN || "").toString().trim().toLowerCase();
+                        const dataProgram = (item.PROGRAM || "").toString().trim().toLowerCase();
+                        const dataWilayah = (item.WILAYAH || "").toString().trim().toLowerCase();
+
+                        // Bandingkan dengan input user
+                        return dataBulan === bulan.toLowerCase() &&
+                               dataProgram === cabor.toLowerCase() &&
+                               dataWilayah === wil.toLowerCase();
                     });
-                    renderData(filtered);
+
+                    renderData(filteredData, cabor, wil);
+                },
+                error: function(err) {
+                    console.error("Error fetching CSV:", err);
+                    alert("Gagal mengambil data. Periksa koneksi internet atau URL Spreadsheet.");
+                    document.getElementById('loading').classList.add('hidden');
                 }
             });
         }
 
-        function renderData(data) {
+        // Fungsi Render Tampilan Grid
+        function renderData(data, cabor, wil) {
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
             
             const grid = document.getElementById('atletGrid');
-            grid.innerHTML = '';
+            grid.innerHTML = ''; // Bersihkan grid lama
 
+            // Jika Data Kosong
             if (data.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-400 italic font-bold">Data tidak ditemukan untuk periode ini.</div>';
-                document.getElementById('statTotal').innerText = "0";
-                document.getElementById('statAvg').innerText = "0%";
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white rounded-3xl border-2 border-dashed border-gray-200">
+                        <i class="fas fa-folder-open text-4xl text-gray-300 mb-3"></i>
+                        <p class="text-gray-500 font-bold">Tidak ada data ditemukan.</p>
+                        <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Pastikan input di Spreadsheet sesuai:<br>${cabor} | ${wil}</p>
+                    </div>
+                `;
+                updateStats(0, 0);
                 return;
             }
 
             let totalHadir = 0;
-            data.forEach(atlet => {
+
+            // Loop setiap atlet
+            data.forEach((atlet, index) => {
+                const nama = atlet.NAMA || "Tanpa Nama";
                 const hadir = parseInt(atlet.HADIR) || 0;
-                totalHadir += hadir;
-                const perc = Math.round((hadir / 12) * 100);
+                // Gunakan foto dari kolom FOTO, jika kosong pakai UI Avatars sebagai fallback yang bagus
+                const defaultFoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(nama)}&background=630000&color=fff&size=128`;
+                const foto = (atlet.FOTO && atlet.FOTO.startsWith('http')) ? atlet.FOTO : defaultFoto;
                 
-                grid.innerHTML += `
-                    <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border border-gray-100 fade-in text-center group hover:border-gold transition-all">
-                        <img src="${atlet.FOTO || 'logo-csa.png'}" class="w-20 h-20 rounded-full mx-auto object-cover mb-4 border-2 border-gold/20 group-hover:border-gold transition-all" onerror="this.src='logo-csa.png'">
-                        <h3 class="font-sport text-sm text-maroon uppercase mb-1 leading-tight">${atlet.NAMA}</h3>
-                        <div class="flex justify-between text-[10px] font-bold mb-2 text-gray-400">
-                            <span>KEHADIRAN: ${hadir}/12</span>
-                            <span>${perc}%</span>
+                const persentase = Math.round((hadir / 12) * 100);
+                const cappedPersentase = persentase > 100 ? 100 : persentase; // Cap max 100%
+                
+                totalHadir += hadir;
+
+                // Animasi delay staggered (muncul bergantian)
+                const delayAnimasi = index * 100; 
+
+                // HTML Kartu Atlet
+                const cardHTML = `
+                    <div class="bg-white rounded-[2rem] p-6 shadow-xl border border-gray-100 text-center group hover:border-gold transition-all hover:-translate-y-2 duration-300 fade-in" style="animation-delay: ${delayAnimasi}ms">
+                        <div class="relative w-24 h-24 mx-auto mb-4">
+                            <img src="${foto}" 
+                                 class="w-full h-full rounded-full object-cover border-4 border-gray-100 group-hover:border-gold transition-colors shadow-md"
+                                 onerror="this.src='${defaultFoto}'">
+                            ${persentase >= 100 ? '<div class="absolute -right-2 -bottom-2 bg-gold text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm border-2 border-white"><i class="fas fa-star"></i> 100%</div>' : ''}
                         </div>
-                        <div class="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden">
-                            <div class="gold-gradient h-full" style="width: ${perc}%"></div>
+                        
+                        <h3 class="font-sport text-sm text-maroon uppercase font-bold mb-1 leading-tight line-clamp-1" title="${nama}">${nama}</h3>
+                        <p class="text-[10px] text-gray-400 mb-4 font-bold uppercase tracking-wide">ID: CSA-${String(index+1).padStart(3, '0')}</p>
+                        
+                        <div class="bg-gray-100 rounded-xl p-3 mb-3">
+                            <div class="flex justify-between text-[10px] font-bold mb-1 uppercase text-gray-500">
+                                <span>Kehadiran</span>
+                                <span class="${persentase >= 80 ? 'text-green-600' : 'text-orange-500'}">${hadir}/12 Sesi</span>
+                            </div>
+                            <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                                <div class="gold-gradient h-full transition-all duration-1000 ease-out" style="width: ${cappedPersentase}%"></div>
+                            </div>
                         </div>
                     </div>
                 `;
+                grid.innerHTML += cardHTML;
             });
 
-            document.getElementById('statTotal').innerText = data.length;
-            document.getElementById('statAvg').innerText = Math.round((totalHadir / (data.length * 12)) * 100) + "%";
+            // Update Statistik Dashboard
+            const avgPresence = Math.round((totalHadir / (data.length * 12)) * 100);
+            updateStats(data.length, avgPresence);
+        }
+
+        // Fungsi Update Angka Statistik
+        function updateStats(total, avg) {
+            // Animasi angka (counter effect) bisa ditambahkan jika perlu
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statAvg').innerText = avg + "%";
+            
+            const statusEl = document.getElementById('statStatus');
+            if (avg >= 85) {
+                statusEl.innerText = "Excellent";
+                statusEl.className = "text-sm font-bold text-green-700 uppercase mt-3 bg-green-100 inline-block px-3 py-1 rounded-full";
+            } else if (avg >= 70) {
+                statusEl.innerText = "Good";
+                statusEl.className = "text-sm font-bold text-blue-700 uppercase mt-3 bg-blue-100 inline-block px-3 py-1 rounded-full";
+            } else {
+                statusEl.innerText = "Needs Improvement";
+                statusEl.className = "text-sm font-bold text-orange-700 uppercase mt-3 bg-orange-100 inline-block px-3 py-1 rounded-full";
+            }
         }
     </script>
 </body>
