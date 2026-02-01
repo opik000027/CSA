@@ -140,7 +140,7 @@
                         <div class="flex-grow w-full">
                             <div class="flex justify-between text-[11px] font-bold text-gray-500 mb-3 uppercase tracking-wider italic">
                                 <span id="txtAbsenDetail" class="text-maroon">0 dari 12x Latihan dalam sebulan</span>
-                                <span>Target: 12x</span>
+                                <span>Target: <span id="lblTarget">12</span>x</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-4 overflow-hidden shadow-inner p-1">
                                 <div id="barAbsen" class="gold-gradient h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
@@ -172,14 +172,14 @@
 
     <script>
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAg9NhPDYcmxERNMMc0xPAyl71vyQDqu17yXbPlAyJmcNdBd5xHrE8NYSaT-PcPeNksGYdV9lb97hC/pub?gid=1540868773&single=true&output=csv";
-        const CACHE_NAME = "csa_cache_v3";
-        const CACHE_TIME = 30 * 60 * 1000;
+        const CACHE_NAME = "csa_cache_v4_fix"; // Versi cache baru
+        const CACHE_TIME = 15 * 60 * 1000; // 15 Menit
 
         let dbData = {};
+        let totalSesiGlobal = 12; // Default
         let chartInstance = null;
         const labelsTes = ["Push Up", "Sit Up", "Power", "Agility", "VO2Max", "Flexibility"];
 
-        // Toggle Mobile Menu
         const toggleBtn = document.getElementById('mobile-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
         toggleBtn.addEventListener('click', () => {
@@ -187,11 +187,13 @@
         });
 
         window.onload = () => {
+            // Cek Cache (Agar cepat)
             const cachedData = localStorage.getItem(CACHE_NAME);
             const cachedTime = localStorage.getItem(CACHE_NAME + "_time");
             const now = new Date().getTime();
 
             if (cachedData && cachedTime && (now - cachedTime < CACHE_TIME)) {
+                console.log("Menggunakan Data Cache");
                 dbData = JSON.parse(cachedData);
                 hideLoading();
             } else {
@@ -200,10 +202,34 @@
         };
 
         function fetchFreshData() {
+            console.log("Mengambil Data Baru...");
             Papa.parse(SHEET_URL, {
                 download: true, header: true, skipEmptyLines: true,
                 complete: (results) => {
-                    processData(results.data);
+                    // 1. TEKNIK NORMALISASI: UBAH SEMUA HEADER JADI HURUF BESAR
+                    const dataNormalized = results.data.map(row => {
+                        const newRow = {};
+                        Object.keys(row).forEach(key => {
+                            newRow[key.trim().toUpperCase()] = row[key];
+                        });
+                        return newRow;
+                    });
+                    
+                    // 2. CARI INFO TOTAL SESI (DARI KOLOM Z)
+                    // Cari baris pertama yang punya info "12x" atau semacamnya di kolom manapun
+                    const sampleRow = results.data.find(item => {
+                        const str = Object.values(item).join(" ").toLowerCase();
+                        return str.includes("x latihan") || str.includes("x sesi");
+                    });
+                    if (sampleRow) {
+                        const str = Object.values(sampleRow).join(" ").toLowerCase();
+                        const match = str.match(/(\d+)\s*x/);
+                        if(match && match[1]) totalSesiGlobal = parseInt(match[1]);
+                    }
+
+                    processData(dataNormalized);
+                    
+                    // Simpan ke Cache
                     localStorage.setItem(CACHE_NAME, JSON.stringify(dbData));
                     localStorage.setItem(CACHE_NAME + "_time", new Date().getTime());
                     hideLoading();
@@ -223,19 +249,49 @@
 
         function processData(rows) {
             dbData = { Cimahi: [], KabBandung: [], KBB: [] };
+            
             rows.forEach(row => {
+                // AKSES DATA DENGAN KEY HURUF BESAR (Sesuai Normalisasi tadi)
                 const name = row["NAMA LENGKAP"];
-                const wil = row["WILAYAH"] ? row["WILAYAH"].toLowerCase().replace(/[\s\.]/g, "") : "";
+                const wilRaw = row["WILAYAH"] || "";
+                
+                // Bersihkan Data Wilayah
+                const wil = wilRaw.toLowerCase().replace(/[\s\.]/g, "");
+
                 if(!name || !wil) return;
-                let key = wil.includes("cimahi") ? "Cimahi" : (wil.includes("kabb") || wil.includes("bandungbarat") ? "KBB" : (wil.includes("bandung") ? "KabBandung" : ""));
+
+                // Logika Wilayah yang kuat
+                let key = "";
+                if (wil.includes("cimahi")) key = "Cimahi";
+                else if (wil.includes("kbb") || wil.includes("bandungbarat")) key = "KBB";
+                else if (wil.includes("bandung") && !wil.includes("barat")) key = "KabBandung";
+
                 if(key) {
                     dbData[key].push({
-                        nama: name, cabor: row["PROGRAM YANG DIPILIH"] || "-",
-                        foto: row["FOTO TERBAIK"] && row["FOTO TERBAIK"].length > 10 ? row["FOTO TERBAIK"] : `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=630000&color=fff`,
-                        nilai: [parseInt(row.PUSHUP_NILAI)||0, parseInt(row.SITUP_NILAI)||0, parseInt(row.POWER_NILAI)||0, parseInt(row.AGILITY_NILAI)||0, parseInt(row.VO2_NILAI)||0, parseInt(row.FLEX_NILAI)||0],
-                        detail: [row.PUSHUP_HASIL||"0", row.SITUP_HASIL||"0", row.POWER_HASIL||"0", row.AGILITY_HASIL||"0", row.VO2_HASIL||"0", row.FLEX_HASIL||"0"],
-                        totalSkor: parseInt(row.TOTAL_SKOR)||0, predikat: row.PREDIKAT||"Belum Tes",
-                        absensi: parseInt(row.ABSENSI)||0, catatan: row.CATATAN || "Tetap semangat berlatih!"
+                        nama: name, 
+                        cabor: row["PROGRAM YANG DIPILIH"] || "-",
+                        foto: (row["FOTO TERBAIK"] && row["FOTO TERBAIK"].length > 10) ? row["FOTO TERBAIK"] : `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=630000&color=fff`,
+                        // Ambil Nilai (Pastikan nama kolom sesuai di Excel tapi HURUF BESAR)
+                        nilai: [
+                            parseInt(row["PUSHUP_NILAI"])||0, 
+                            parseInt(row["SITUP_NILAI"])||0, 
+                            parseInt(row["POWER_NILAI"])||0, 
+                            parseInt(row["AGILITY_NILAI"])||0, 
+                            parseInt(row["VO2_NILAI"])||0, 
+                            parseInt(row["FLEX_NILAI"])||0
+                        ],
+                        detail: [
+                            row["PUSHUP_HASIL"]||"0", 
+                            row["SITUP_HASIL"]||"0", 
+                            row["POWER_HASIL"]||"0", 
+                            row["AGILITY_HASIL"]||"0", 
+                            row["VO2_HASIL"]||"0", 
+                            row["FLEX_HASIL"]||"0"
+                        ],
+                        totalSkor: parseInt(row["TOTAL_SKOR"])||0, 
+                        predikat: row["PREDIKAT"]||"Belum Tes",
+                        absensi: parseInt(row["ABSENSI"])||0, // INI KUNCINYA: "ABSENSI" (Upper)
+                        catatan: row["CATATAN"] || "Tetap semangat berlatih!"
                     });
                 }
             });
@@ -246,13 +302,19 @@
             const selectNama = document.getElementById("selectNama");
             const divNama = document.getElementById("divSelectNama");
             const btn = document.getElementById("btnLihat");
+            
             selectNama.innerHTML = '<option value="">-- Pilih Nama Atlet --</option>';
+            
             if (wil && dbData[wil]) {
                 divNama.classList.remove("opacity-30", "pointer-events-none");
+                // Sort nama atlet abjad
+                dbData[wil].sort((a, b) => a.nama.localeCompare(b.nama));
+                
                 dbData[wil].forEach((a, i) => {
                     const opt = document.createElement("option"); opt.value = i; opt.innerHTML = a.nama;
                     selectNama.appendChild(opt);
                 });
+                
                 selectNama.onchange = function() {
                     if (this.value !== "") {
                         btn.className = "w-full bg-maroon text-white font-bold py-4 rounded-2xl shadow-xl transition hover:scale-[1.02] active:scale-95 uppercase tracking-widest text-xs";
@@ -266,18 +328,24 @@
             const wil = document.getElementById("selectPengcab").value;
             const idx = document.getElementById("selectNama").value;
             const a = dbData[wil][idx];
+
             document.getElementById("imgAtlet").src = a.foto;
             document.getElementById("txtNama").innerText = a.nama;
             document.getElementById("txtCabor").innerText = a.cabor;
             document.getElementById("txtWilayah").innerText = (wil === "KabBandung" ? "KAB. BANDUNG" : (wil === "KBB" ? "KAB. BANDUNG BARAT" : "KOTA CIMAHI"));
             document.getElementById("txtTotalSkor").innerText = a.totalSkor;
             document.getElementById("txtPredikat").innerText = a.predikat;
+            
+            // UPDATE ABSENSI
             document.getElementById("txtAbsen").innerText = a.absensi;
             document.getElementById("barAbsen").style.width = a.absensi + "%";
-            document.getElementById("txtCatatan").innerText = `"${a.catatan}"`;
             
-            const hadir = Math.round((a.absensi/100)*12);
-            document.getElementById("txtAbsenDetail").innerText = hadir + " dari 12x Latihan dalam sebulan";
+            // HITUNG JUMLAH HADIR DINAMIS
+            const hadir = Math.round((a.absensi/100) * totalSesiGlobal);
+            document.getElementById("lblTarget").innerText = totalSesiGlobal;
+            document.getElementById("txtAbsenDetail").innerText = `${hadir} dari ${totalSesiGlobal}x Latihan dalam sebulan`;
+
+            document.getElementById("txtCatatan").innerText = `"${a.catatan}"`;
 
             const p = document.getElementById("txtPredikat");
             p.className = "text-[10px] font-bold text-white px-3 py-1.5 rounded-xl uppercase tracking-wider " + 
@@ -298,6 +366,7 @@
                     </div>
                 </div>`;
             });
+
             renderChart(a.nilai);
             document.getElementById("section-selector").classList.add("hidden");
             document.getElementById("section-report").classList.remove("hidden");
